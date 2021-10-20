@@ -1,0 +1,159 @@
+.login-wrap {
+  height: 100vw;
+  height: 100vh;
+  display: flex;
+  background: url("../../assets/7319.jpg") no-repeat;
+  background-size: 100% 100%;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+
+  .form-head {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-right: 20px;
+    margin-bottom: 10px;
+
+    img {
+      width: 50px;
+      margin-right: 10px;
+    }
+  }
+
+  .form-wrap {
+    width: 400px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+
+    .agree-checkbox {
+      margin-right: 2px;
+    }
+
+    .agree-text {
+      font-size: 12px;
+      color: #999;
+      line-height: 1;
+      vertical-align: middle;
+
+      a {
+        color: #6b91b3;
+        margin: 0 4px;
+        cursor: pointer;
+        text-decoration: none;
+      }
+
+      a:hover {
+        color: #ff5511;
+      }
+    }
+
+    .btn-login {
+      width: 100%;
+    }
+  }
+
+  .form-signup {
+    min-width: 700px;
+    width: 700px;
+    height: 600px;
+    padding: 20px 50px;
+    overflow-y: auto;
+    text-align: justify;
+  }
+
+  .halfinput {
+    display: inline-block;
+    width: 48%;
+  }
+
+  .halfinput+.halfinput {
+    margin-left: 22px;
+  }
+
+  .el-form-item__content {
+    line-height: 40px;
+  }
+
+  .el-form-item__label {
+    margin-right: 40px;
+  }
+}
+
+.agree-box {
+  margin-bottom: 0px;
+  text-align: center;
+}
+
+.zhuce {
+  margin-bottom: 10px;
+  text-align: right;
+  .login-wrap .el-form-item__content {
+    line-height: 20px;
+  }
+  a {
+    display: inline-block;
+    width: 120px;
+    font-size: 12px;
+    line-height: 20px;
+    color: #8c8c8c;
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: #999999;
+  }
+}
+
+.login-wrap .form-wrap .btn-login {
+  height: 44px;
+  font-size: 16px;
+}
+
+.el-form-item__content {
+  line-height: 20px;
+}
+
+.lawsbox {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  background: rgba($color: #000000, $alpha: 0.4);
+  padding: 140px 0px;
+  overflow: hidden;
+  z-index: 10;
+}
+
+.content {
+  position: relative;
+  width: 900px;
+  height: 630px;
+  padding: 30px 60px;
+  margin: 40px auto;
+  background-color: #ffffff;
+  overflow-y: auto;
+
+  p {
+    text-indent: 2em;
+    font-size: 14px;
+    line-height: 24px;
+    color: #333333;
+  }
+
+  h4 {
+    font-size: 24px;
+    text-align: center;
+    font-weight: 600;
+  }
+
+  img {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+  }
+}

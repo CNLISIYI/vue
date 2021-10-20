@@ -1,0 +1,246 @@
+.homelist {
+  width: calc(100vw - 300px);
+  margin: 20px auto;
+  background-color: #ffffff;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.homelist-box {
+  width: 100%;
+
+  li {
+    position: relative;
+    border-bottom: 1px dashed #e6e6e6;
+  }
+  li:last-child {
+    border-bottom: none;
+  }
+}
+
+.homelist-title {
+  color: #666666;
+  height: 40px;
+  line-height: 40px;
+  padding-left: 20px;
+  border-top: 3px solid #62ab00;
+  border-bottom: 1px solid #e6e6e6;
+
+  span {
+    margin: 0 4px;
+    color: #f60;
+    font-weight: 600;
+  }
+}
+
+.zu-itemmod {
+  position: relative;
+  width: calc(100% - 220px);
+  display: block;
+  height: 135px;
+  cursor: pointer;
+  padding: 20px;
+  background-color: #fff
+}
+
+.zu-itemmod:last-child {
+  border-bottom: none;
+}
+
+.zu-itemmod .textlight {
+  color: #eb6100;
+  font-style: normal !important;
+  font-weight: bold !important;
+  padding-left: 0 !important;
+  vertical-align: baseline
+}
+
+.zu-itemmod .img {
+  float: left;
+  width: 180px;
+  height: 135px;
+  position: relative
+}
+
+.zu-itemmod .zu-info {
+  float: left;
+  padding-left: 20px;
+  width: 528px;
+  overflow: hidden;
+  font-size: 14px;
+  color: #797979
+}
+
+.zu-itemmod .zu-info h3 {
+  height: 34px;
+  line-height: 34px;
+  margin-bottom: 6px;
+  display: -moz-flex;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex
+}
+
+.zu-itemmod .zu-info h3 a {
+  color: #333;
+  max-width: 420px;
+  font-size: 16px;
+  font-weight: 600;
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-decoration: none;
+  outline: 0;
+  float: left
+}
+
+.zu-itemmod .zu-info h3 span {
+  display: inline-block;
+  color: #fff;
+  height: 15px;
+  padding: 0 4px;
+  font-size: 12px;
+  line-height: 15px;
+  margin: 8px 0 0 6px;
+  border-radius: 2px;
+  vertical-align: top;
+  margin-top: 9px;
+  width: 26px
+}
+
+.zu-itemmod .zu-info h3 .red {
+  background-color: #eb5f00
+}
+
+.zu-itemmod .zu-info h3 .orange {
+  border: 1px solid #f60;
+  color: #f60
+}
+
+.zu-itemmod .zu-info .details-item {
+  width: 440px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 30px;
+  line-height: 30px
+}
+
+.zu-itemmod .zu-info .details-item img {
+  width: 14px;
+  margin: 0 4px 4px 30px;
+}
+
+.zu-itemmod .zu-info .details-item a {
+  color: #666;
+  text-decoration: none;
+  outline: 0;
+  margin-right: 4px;
+}
+
+.zu-itemmod .zu-info .bot-tag span {
+  float: left;
+  padding: 0 10px;
+  line-height: 22px;
+  height: 22px;
+  font-size: 12px;
+  border-radius: 16px;
+  margin-right: 10px;
+  margin-top: 8px
+}
+
+.zu-itemmod .zu-info .bot-tag .cls-1 {
+  background-color: #fcf4f1;
+  color: #e88a78
+}
+
+.zu-itemmod .zu-info .bot-tag .cls-2 {
+  background-color: #f2f6ed;
+  color: #799374
+}
+
+.zu-itemmod .zu-info .bot-tag .cls-3 {
+  background-color: #f0f4f8;
+  color: #6682ae
+}
+
+.zu-itemmod .zu-info .bot-tag .cls-4 {
+  background-color: #FFFAF0;
+  color: #8B7500
+}
+
+.zu-itemmod .zu-info address {
+  font-style: normal;
+  font-weight: normal
+}
+
+.zu-itemmod .zu-info .tag span {
+  margin: 0 10px;
+  display: inline-block;
+  margin-right: 10px;
+  width: 1px;
+  background: #ccc;
+  height: 10px;
+  font-size: 0;
+  text-indent: -9999px;
+  overflow: hidden
+}
+
+.zu-itemmod .zu-info .tag .iconfont {
+  display: inline-block;
+  color: #000;
+  text-align: center;
+  font-style: normal;
+  font-family: 'iconfont'
+}
+
+.zu-itemmod .zu-side {
+  float: right;
+  width: 112px;
+  white-space: nowrap
+}
+
+.zu-itemmod .zu-side p {
+  width: 100%;
+  float: right;
+  font-size: 13px;
+  color: #eb5f00;
+  font-weight: bold;
+  text-align: right;
+  padding: 40px 0 10px 0
+}
+
+.zu-itemmod .zu-side p strong {
+  font-size: 22px;
+  font-weight: bold;
+  vertical-align: baseline;
+  font-style: normal
+}
+
+.zu-itemmod:hover,
+.zu-over {
+  background-color: #f9f9f9
+}
+
+.zu-itemmod:hover .zu-info h3 a,
+.zu-over .zu-info h3 a {
+  color: #f60;
+  text-decoration: underline
+}
+
+.f-delete {
+  position: absolute;
+  right: 40px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  border: 1px solid #999999;
+  border-radius: 12px;
+  width: 70px;
+  height: 26px;
+  color: #999999;
+  text-align: center;
+  line-height: 26px;
+  font-size: 14px;
+}

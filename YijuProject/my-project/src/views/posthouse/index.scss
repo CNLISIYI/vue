@@ -1,0 +1,124 @@
+.post-head {
+  position: relative;
+  width: 100%;
+  height: 500px;
+  background: url("https://webimg.ziroom.com/24c39d44-7d1d-4342-9461-b452d9a4a8a8.jpg") no-repeat;
+}
+
+.mask-box {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 500px;
+  background-color: rgba($color: #000000, $alpha: 0.3);
+  text-align: center;
+  color: #ffffff;
+  font-weight: 600;
+
+  h3 {
+    font-size: 48px;
+    margin-top: 160px;
+  }
+
+  p {
+    margin-top: 20px;
+    font-size: 24px;
+  }
+}
+
+.head-btn {
+  width: 160px;
+  height: 40px;
+  margin: 80px auto 0;
+  padding: 0px 14px;
+  border-radius: 8px;
+  background-color: #62ab00;
+  line-height: 40px;
+  font-size: 16px;
+  font-weight: normal;
+  text-align: center;
+  cursor: pointer;
+}
+
+.head-btn:hover {
+  opacity: 0.8;
+}
+
+.post-form {
+  width: calc(100vw - 300px);
+  margin: 80px auto 40px;
+  color: #262626;
+
+  h4 {
+    font-weight: 600;
+    font-size: 28px;
+    margin-bottom: 8px;
+  }
+}
+
+.element-form {
+  width: calc(100% - 100px);
+  background-color: #ffffff;
+  border-radius: 8px;
+  margin-top: 20px;
+  padding: 20px 70px 20px 30px;
+
+  .halfinput {
+    display: inline-block;
+    width: 48%;
+  }
+
+  .halfinput:nth-child(2n) {
+    margin-right: 30px;
+  }
+
+  .el-select {
+    width: 100%;
+  }
+
+  .el-textarea__inner {
+    resize: none;
+    height: 140px;
+  }
+
+  .el-textarea {
+    width: 48%;
+  }
+
+  .el-form-item__label {
+    margin-right: 22px;
+  }
+
+  .smallinput {
+    display: inline-block;
+    width: 20%;
+    margin: 0 5px 0 15px;
+  }
+
+  .smallinput:first-child {
+    margin-left: 0;
+  }
+
+  .form-btn {
+    text-align: center;
+    margin-top: 60px;
+  }
+
+}
+
+.upload-photo {
+  .el-form-item__content {
+    padding-left: 90px;
+  }
+
+  p {
+    font-size: 14px;
+    color: #999999;
+  }
+}
+.err-position {
+  .el-form-item__error {
+    left: 90px;
+  }
+}

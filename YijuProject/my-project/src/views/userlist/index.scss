@@ -1,0 +1,27 @@
+.table-border {
+  width: calc(100vw - 300px);
+  margin: 0 auto;
+  margin: 20px auto;
+  h4 {
+    font-size: 22px;
+    color: #262626;
+    margin: 30px auto 20px;
+  }
+}
+.el-table {
+  border-radius: 12px;
+}
+.el-table .warning-row {
+  background: oldlace;
+}
+
+.el-table .success-row {
+  background: #f0f9eb;
+}
+.el-table--enable-row-transition .el-table__body td {
+  text-align: center;
+}
+.el-table--border th {
+  text-align: center;
+}
+

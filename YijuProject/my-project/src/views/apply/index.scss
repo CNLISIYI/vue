@@ -1,0 +1,93 @@
+.apply-head {
+  position: relative;
+  width: 100%;
+  height: 500px;
+  background: url("https://webimg.ziroom.com/acde29d9-78e7-4953-9ee8-bf7717d0352f.jpg") no-repeat;
+}
+.mask-box {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 500px;
+  background-color: rgba($color: #000000, $alpha: 0.3);
+  text-align: center;
+  color: #ffffff;
+  font-weight: 600;
+  h3 {
+    font-size: 48px;
+    margin-top: 160px;
+  }
+  p {
+    margin-top: 20px;
+    font-size: 24px;
+  }
+}
+.apply-form {
+  width: calc(100vw - 300px);
+  margin: 80px auto 40px;
+  color: #262626;
+  h4 {
+    font-weight: 600;
+    font-size: 28px;
+    margin-bottom: 8px;
+  }
+  p {
+    font-size: 16px;
+  }
+  ul {
+    background-color: #ffffff;
+    border-radius: 12px;
+    margin-top: 20px;
+    overflow: hidden;
+  }
+  .circle {
+    float: left;
+    margin: 240px 50px;
+    span {
+      display: inline-block;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background-color: #262626;
+    }
+    span + span {
+      margin-left: 5px;
+    }
+  }
+  li {
+    float: left;
+    text-align: center;
+    margin-top: 146px;
+    img {
+      width: 95px;
+      height: 95px;
+    }
+    h4 {
+      font-size: 18px;
+      color: #262626;
+    }
+    p {
+      max-width: 180px;
+      margin-top: 8px;
+      font-size: 14px;
+      color: #666666;
+    }
+  } 
+  li + li {
+    margin-left: 40px;
+  }
+  .formbox {
+    width: 400px;
+    height: 400px;
+    padding: 40px;
+    background-color: #ffffff;
+    margin-top: 0;
+  }
+  .el-form {
+    border: 1px solid #cccccc;
+    border-radius: 20px;
+    padding: 30px 20px 20px;
+    margin-top: 20px;
+  }
+}

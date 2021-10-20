@@ -1,0 +1,167 @@
+.mine-head {
+  background: url("https://pages.anjukestatic.com/usersite/site/img/userCenter/banner100_100.png") no-repeat;
+  margin-top: -20px;
+  height: 100px;
+  padding: 15px 150px;
+  overflow: hidden;
+
+  h3 {
+    margin-top: 10px;
+    line-height: 1;
+    font-size: 26px;
+    color: #475669;
+    margin-bottom: 12px;
+  }
+
+  p {
+    font-size: 14px;
+    color: #475669;
+  }
+
+  i {
+    display: inline-block;
+    margin: 0 20px;
+    width: 1px;
+    height: 10px;
+    background-color: #999999;
+  }
+}
+
+.head-box {
+  float: left;
+  width: 50px;
+  height: 50px;
+  padding: 10px;
+  border-radius: 50%;
+  margin-right: 20px;
+  border: 1px solid #e6e6e6;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.mine-border {
+  width: calc(100vw - 300px);
+  height: 630px;
+  margin: 0 auto;
+}
+
+.mine-container {
+  float: right;
+  width: calc(100% - 220px);
+  height: 100%;
+  background-color: #ffffff;
+}
+
+.content-title {
+  width: 100%;
+  border-bottom: 3px solid #62ab00;
+
+  span {
+    display: block;
+    width: 120px;
+    height: 44px;
+    line-height: 48px;
+    background-color: #62ab00;
+    color: #ffffff;
+    font-weight: 600;
+    text-align: center;
+    font-size: 16px;
+  }
+}
+
+.data-box {
+  position: relative;
+
+  ul {
+    padding: 60px 60px 20px;
+
+    li {
+      font-size: 0;
+      margin-bottom: 50px;
+    }
+
+    span {
+      font-size: 14px;
+      color: #999999;
+      margin-right: 40px;
+    }
+
+    p {
+      display: inline-block;
+      font-size: 16px;
+      color: #475669;
+    }
+  }
+}
+
+.data-btn {
+  position: absolute;
+  bottom: -20px;
+  right: 60px;
+  width: 100px;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  background-color: #62ab00;
+  color: #ffffff;
+  font-size: 15px;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+}
+
+.revise-box {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 760px;
+  height: 500px;
+  padding: 20px 50px;
+  border-radius: 12px;
+  background-color: #ffffff;
+  z-index: 101;
+  transform: translate(-50%, -50%);
+
+  img {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+  }
+
+  h2 {
+    font-size: 20px;
+    color: #62ab00;
+    margin-bottom: 20px;
+  }
+
+  .halfinput {
+    display: inline-block;
+    width: 48%;
+  }
+
+  .el-form-item__content {
+    line-height: 40px;
+  }
+
+  .mr20 {
+    margin-right: 20px;
+  }
+
+  .el-form-item__label {
+    margin-right: 40px;
+  }
+
+  .el-button--primary {
+    display: block;
+    width: 120px;
+    height: 40px;
+    margin: 20px auto 0;
+  }
+}
