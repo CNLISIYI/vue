@@ -1,0 +1,124 @@
+.tips {
+  margin-bottom: 0;
+}
+
+/deep/ .el-input__inner {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.line-input {
+  display: inline-block;
+  max-width: 193px;
+  vertical-align: middle;
+}
+.big-input {
+  max-width: 588px;
+}
+.mid-input {
+  display: inline-block;
+  max-width: 276px;
+}
+
+.input-txt {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 5px;
+  font-size: 14px;
+  color: #909399;
+  margin-right: 20px;
+
+}
+
+.dis-inline {
+  display: inline-block;
+
+  .el-button.is-round {
+    margin-right: 2px;
+    padding: 12px 18px;
+  }
+
+  .el-select {
+    width: 276px;
+  }
+
+  .el-input__inner {
+    max-width: 276px;
+  }
+}
+
+.ml26 {
+  margin-left: 26px;
+  vertical-align: middle;
+}
+
+
+.param-item {
+  margin-top: 6px;
+}
+
+.showmore-txt {
+  margin: 30px 0 20px;
+  display: block;
+}
+
+.submit-btn {
+  text-align: center;
+}
+
+.video-box {
+  max-width: 300px;
+  max-height: 300px;
+  margin-top: 10px;
+
+  video {
+    max-width: 300px;
+    max-height: 300px;
+  }
+}
+
+
+.editor-box {
+  position: relative;
+
+  .el-button {
+    position: absolute;
+    right: 20px;
+    top: 48px;
+    z-index: 3;
+    padding: 6px 15px;
+  }
+}
+
+#pro-editor {
+  height: 500px;
+}
+
+/deep/ .w-e-text-container {
+  z-index: 1 !important;
+}
+
+/deep/ .w-e-toolbar {
+  z-index: 2 !important;
+}
+
+/deep/ .w-e-panel-container {
+  display: none !important;
+}
+
+.lh26 {
+  line-height: 26px;
+}
+
+.mb15 {
+  margin-bottom: -15px;
+  display: block;
+}
+
+._a {
+  margin-top: 10px;
+}
+._a:hover {
+  color: #ffffff !important;
+}

@@ -1,0 +1,104 @@
+.el-card__header {
+    span {
+        font-size: 16px;
+        font-weight: 600;
+    }
+}
+.home-outer {
+    height: calc(100vh - 160px);
+    overflow-y: scroll;
+}
+.home-cards {
+    display: flex;
+    flex-wrap: nowrap;
+
+    .box-card {
+        flex: 1;
+        min-height: 294px;
+        li {
+            cursor: pointer;
+        }
+        li:hover {
+            color: #1a8cff;
+            text-decoration: underline;
+            background-color: #f7f7f7;
+        }
+        .more-btn {
+            float: right;
+            padding: 0px 3px;
+            color: #1a8cff;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        .more-btn:hover{
+            text-decoration: underline !important;
+        }
+        .el-button {
+            color: #fff;
+            cursor: pointer;
+        }
+    }
+    .box-card + .box-card{
+        margin-left: 20px;
+    }
+}
+.card-item {
+    font-size: 0;
+    margin-bottom: 10px;
+    span {
+        display: inline-block;
+        font-size: 14px;
+        color: #666;
+        min-width: 120px;
+        line-height: 28px;
+    }
+    p {
+        width: calc(100% - 120px);
+        display: inline-block;
+        font-size: 14px;
+        line-height: 28px;
+        color: #222;
+    }
+    a {
+        display: inline-block;
+        width: calc(100% - 120px);
+        margin-left: 0;
+        line-height: 28px;
+        color: #1a8cff;
+        font-size: 14px;
+        cursor: pointer;
+    }
+}
+.card-item:hover{
+    background-color: #f7f7f7;
+    a {
+        text-decoration: underline !important;
+    }
+}
+.col-gre {
+    color: #008000 !important;
+}
+.col-red {
+    color: #ff0000;
+}
+
+.echart-box {
+    width: 100%;
+    margin-top: 20px;
+    padding-bottom: 80px;
+}
+.router-link{
+    display: block;
+    width: 10px;
+    height: 30px;
+    margin: 10px 0 -30px;
+    cursor: none;
+}
+.router-right {
+    float: right;
+    width: 10px;
+    height: 30px;
+    margin: 10px 0 -30px;
+    cursor: none;
+}
