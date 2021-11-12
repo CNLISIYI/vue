@@ -57,7 +57,7 @@ const router = new Router({
  */
 router.beforeEach((to, from, next) => {
   // 路由导航前，开启进度条
-  nprogress.start()
+  // nprogress.start()
 
   // const userInfo = window.localStorage.getItem('user_info')
   const userInfo = getUser()
@@ -68,7 +68,7 @@ router.beforeEach((to, from, next) => {
       // 如果是来自登录页的页面，是不会重新进行页面导航的，也就不会触发后面的 afterEach 钩子
       // 所以在这里手动结束动画，防止出现在登录页访问其他页面顶部一直 loading 的问题。
       if (from.path === '/login') {
-        nprogress.done()
+        // nprogress.done()
       }
       next({ name: 'login' })
       // next('/login')
@@ -98,7 +98,7 @@ router.beforeEach((to, from, next) => {
 
 router.afterEach((to, from) => {
   // 路由导航完成，结束进度条
-  nprogress.done()
+  // nprogress.done()
 })
 
 export default router
