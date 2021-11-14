@@ -1,4 +1,3 @@
-import OSS from 'ali-oss'
 import FileSaver from "file-saver";
 
 // 时间戳转yyyy-mm-dd h:m:s
@@ -62,14 +61,6 @@ const isMobile = () => {
 const openUrl = (url) => {
   window.open(url, "_blank");
 }
-// 打开产品详情页
-const openProduct = (id) => {
-  window.open(`https://www.yuncaigou.net/sell-show-${id}.html`, "_blank")
-}
-// 打开产品详情页
-const open1688Pro = (id) => {
-  window.open(`https://detail.1688.com/offer/${id}.html`, "_blank")
-}
 
 // 只能输入汉字、字母、数字
 const inputLimit = (value) => {
@@ -82,12 +73,12 @@ const onlyChinese = (value) => {
 
 // 只能输入数字
 const onlyNumber = (value) => {
-  return value.replace(/[^\d]/g,'')
+  return value.replace(/[^\d]/g, '')
 }
 
 // 只能输入字母
 const onlyEnglish = (value) => {
-  return value.replace(/[^\a-\z\A-\Z]/g,'')
+  return value.replace(/[^\a-\z\A-\Z]/g, '')
 }
 
 // base64转url
@@ -128,19 +119,6 @@ const bytesToSize = (bytes) => {
   };
 }
 
-// 上传图片OSS
-const getClient = (data) => {
-  const client = new OSS({
-    endpoint: 'http://oss-cn-beijing.aliyuncs.com',
-    region: 'oss-cn-beijing.aliyuncs.com',
-    accessKeyId: data.AccessKeyId,
-    accessKeySecret: data.AccessKeySecret,
-    stsToken: data.SecurityToken,
-    bucket: 'ctrlyuncaigou'
-  });
-  return client
-}
-
 // 导出文件
 const exportCSV = (data, filename) => {
   const Json2csvParser = require("json2csv").Parser;
@@ -152,12 +130,6 @@ const exportCSV = (data, filename) => {
   FileSaver.saveAs(blob, filename);
 }
 
-// 退出登录
-const userLogout = () => {
-  const time = new Date().getTime();
-  $cookies.set('user_token', '', time - 86400 * 365, '/', 'yuncaigou.net');
-  $cookies.set('_act_ctrl', null);
-}
 // 手机号
 const PhoneInput = (nums) => {
   if (nums.length > 11) {
@@ -167,25 +139,42 @@ const PhoneInput = (nums) => {
   }
 }
 
+// 身份类型转换
+const roleToLabel = (value) => {
+  let label = ''
+  switch (parseInt(value)) {
+    case 0:
+      label = '项目业主'
+      break
+    case 1:
+      label = '排放单位'
+      break
+    case 2:
+      label = '项目代理人'
+      break
+    default:
+      label = ''
+      break;
+  }
+  return label;
+}
+
 export default {
   timeToDate,
   toYMDDate,
   isMobile,
   openUrl,
-  getClient,
   bytesToSize,
   toMDDate,
   toDayHour,
-  openProduct,
   exportCSV,
   pastDate,
   StoYMDDate,
-  userLogout,
   inputLimit,
   onlyChinese,
-  open1688Pro,
   PhoneInput,
   imageBase64ToBlob,
   onlyNumber,
-  onlyEnglish
+  onlyEnglish,
+  roleToLabel
 }

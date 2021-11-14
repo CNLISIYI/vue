@@ -63,7 +63,7 @@ export default {
 	background-color: #ecf8ff;
 	border-radius: 4px;
 	border-left: 5px solid #50bfff;
-	margin: 10px 0 20px;
+	margin: 20px 0 20px;
 	p {
 		font-size: 14px;
 		color: #5e6d82;
@@ -133,6 +133,7 @@ export default {
 
 // 卡片样式
 .box-card {
+	margin-bottom: 20px;
 	h4 {
 		float: left;
 		line-height: 28px;

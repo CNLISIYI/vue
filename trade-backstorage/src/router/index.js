@@ -24,17 +24,41 @@ const router = new Router({
         keepAlive: false
       }
     }, {
-      name: 'banner', //banner管理
-      path: '/banner',
-      component: () => import('@/views/banner'),
+      name: 'information', //信息录入
+      path: '/information',
+      component: () => import('@/views/information'),
       children: [],
       meta: {
         keepAlive: false
       }
     }, {
-      name: 'managenews', //内容管理
-      path: '/managenews',
-      component: () => import('@/views/managenews'),
+      name: 'manageuser', //用户管理
+      path: '/manageuser',
+      component: () => import('@/views/manageuser'),
+      children: [],
+      meta: {
+        keepAlive: false
+      }
+    },{
+      name: 'managetan', //碳汇项目管理
+      path: '/managetan',
+      component: () => import('@/views/managetan'),
+      children: [],
+      meta: {
+        keepAlive: false
+      }
+    },{
+      name: 'managedone', //成交单管理
+      path: '/managedone',
+      component: () => import('@/views/managedone'),
+      children: [],
+      meta: {
+        keepAlive: false
+      }
+    },{
+      name: 'agreement', //协议成交管理
+      path: '/agreement',
+      component: () => import('@/views/agreement'),
       children: [],
       meta: {
         keepAlive: false
@@ -43,14 +67,6 @@ const router = new Router({
       name: 'changepw', //修改密码
       path: '/changepw',
       component: () => import('@/views/changepw'),
-      children: [],
-      meta: {
-        keepAlive: false
-      }
-    }, {
-      name: 'newspost', //发布内容
-      path: '/newspost',
-      component: () => import('@/views/newspost'),
       children: [],
       meta: {
         keepAlive: false

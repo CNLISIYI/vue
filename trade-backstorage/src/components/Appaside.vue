@@ -16,20 +16,26 @@
 					<i class="el-icon-s-home"></i>
 					<span slot="title">首页</span>
 				</el-menu-item>
-				<el-menu-item index="banner">
-					<i class="el-icon-picture"></i>
-					<span slot="title">banner图管理</span>
+				<el-menu-item index="manageuser">
+					<i class="el-icon-s-custom"></i>
+					<span slot="title">用户管理</span>
 				</el-menu-item>
-				<el-submenu index="3">
-					<template slot="title">
-						<i class="el-icon-s-tools"></i>
-						<span>内容管理</span>
-					</template>
-					<el-menu-item-group>
-						<el-menu-item index="managenews">内容管理</el-menu-item>
-						<el-menu-item index="newspost">发布内容</el-menu-item>
-					</el-menu-item-group>
-				</el-submenu>
+				<el-menu-item index="managetan">
+					<i class="el-icon-s-help"></i>
+					<span slot="title">碳汇项目管理</span>
+				</el-menu-item>
+				<el-menu-item index="agreement">
+					<i class="el-icon-s-unfold"></i>
+					<span slot="title">协议成交管理</span>
+				</el-menu-item>
+				<el-menu-item index="managedone">
+					<i class="el-icon-s-claim"></i>
+					<span slot="title">成交单管理</span>
+				</el-menu-item>
+				<el-menu-item index="information">
+					<i class="el-icon-s-open"></i>
+					<span slot="title">行情信息录入</span>
+				</el-menu-item>
 				<el-submenu index="4">
 					<template slot="title">
 						<i class="el-icon-s-tools"></i>

@@ -33,73 +33,140 @@ export const GetHomeNotice = () => req('get', 'cms/home/announcement', {})
 //获取首页新闻
 export const GetHomeNews = () => req('get', 'cms/home/news', {})
 
-// 获取banner列表
-export const GetBannerData = (pageNumber) => req('post', 'cms/banner/list', qs.stringify({
+// 获取录入信息列表
+export const GetInfoData = (pageNumber, create_time, exchange_code) => req('post', 'trade/marketInfo/list', qs.stringify({
   pageNumber,
+  filters: JSON.stringify([{
+      property: "create_time",
+      operator: "like",
+      value: create_time
+    },
+    {
+      property: "exchange_code",
+      operator: "eq",
+      value: exchange_code
+    },
+  ]),
   pageSize: 20
 }))
 
-// 新增banner
-export const PostBannerData = (form) => req('post', 'cms/banner', qs.stringify({
-  title: form.title, //标题
-  image: form.image, //banner图
-  url: form.url ? form.url : '', //跳转链接
-  orders: form.orders ? form.orders : '' //显示顺序
-}))
-
-// 上传图片
-export const PostImage = (file) => req('post', 'upload/upload-image', qs.stringify({
-  file
-}))
-
-//获取banner详情
-export const GetBannerDetail = (bannerId) => req('get', 'cms/banner', {
-  bannerId
-})
-
-//编辑banner详情
-export const EditBannerData = (form) => req('put', 'cms/banner', qs.stringify({
+// 新增录入信息
+export const PostInfoData = (form) => req('post', 'trade/marketInfo/saveOrUpdate', qs.stringify({
   id: form.id,
-  title: form.title, //标题
-  image: form.image, //banner图
-  url: form.url ? form.url : '', //跳转链接
-  orders: form.orders ? form.orders : '' //显示顺序
+  exchangeCode: form.exchangeCode,
+  exchangeName: form.exchangeName,
+  openingPrice: form.openingPrice,
+  closingPrice: form.closingPrice,
+  tradedQuantity: form.tradedQuantity,
+  tradedPrice: form.tradedPrice,
+  highestPrice: form.highestPrice,
+  lowestPrice: form.lowestPrice,
+  infoTime: form.infoTime,
 }))
 
-//删除banner
-export const DelBanner = (bannerId) => req('delete', 'cms/banner', {
-  bannerId
+//获取录入信息详情
+export const GetInfoDetail = (id) => req('get', 'trade/marketInfo', {
+  id
 })
 
-//驳回banner
-export const RejectBanner = (id, reject) => req('put', 'cms/banner/reject', {
+//删除录入信息
+export const DelInfo = (id) => req('delete', 'trade/marketInfo', {
+  id
+})
+
+// 获取用户管理列表
+export const GetUserMana = (pageNumber, entName, createTime, role, status) => req('post', 'user/userManage/list', qs.stringify({
+  pageNumber,
+  filters: JSON.stringify([{
+      property: "ent_name",
+      operator: "like",
+      value: entName
+    },
+    {
+      property: "createTime",
+      operator: "eq",
+      value: createTime
+    },
+    {
+      property: "role",
+      operator: "eq",
+      value: role
+    },
+    {
+      property: "status",
+      operator: "eq",
+      value: status
+    }
+  ]),
+  pageSize: 20
+}))
+
+
+//修改用户管理状态
+export const RejectUserMana = (id, status, reject) => req('put', 'user/userManage/status', {
   id,
+  status,
   reject
 })
 
-//修改banner状态
-export const PassBanner = (id, status) => req('put', 'cms/banner/status', qs.stringify({
-  id,
-  status
-}))
+//获取用户管理详情
+export const GetUserManaData = (id) => req('get', 'user/userManage/getUserManageDetail', {
+  id
+})
 
-// 获取文章列表
-export const GetNewsList = (pageNumber, title, time_l, time_r, status, category_id) => req('post', 'cms/article/list', qs.stringify({
+// 获取碳汇项目列表
+export const GetTanMana = (pageNumber, entName, name, declareTime, status) => req('post', 'trade/entProject/list', qs.stringify({
   pageNumber,
   filters: JSON.stringify([{
-      property: "title",
+      property: "ent_name",
       operator: "like",
-      value: title
+      value: entName
     },
     {
-      property: "release_time",
-      operator: "ge",
-      value: time_l
+      property: "name",
+      operator: "like",
+      value: name
     },
     {
-      property: "release_time",
-      operator: "le",
-      value: time_r
+      property: "declareTime",
+      operator: "eq",
+      value: declareTime
+    },
+
+    {
+      property: "status",
+      operator: "eq",
+      value: status
+    }
+  ]),
+  pageSize: 20
+}))
+
+
+//修改碳汇项目状态
+export const RejectTanMana = (id, status, reject) => req('put', 'trade/entProject/status', {
+  id,
+  status,
+  reject
+})
+
+//获取碳汇项目详情
+export const GetTanManaData = (id) => req('get', 'trade/entProject', {
+  id
+})
+
+// 获取成交项目列表
+export const GetAgreeMana = (pageNumber, from_ent_name, to_ent_name, status, create_time) => req('post', 'trade/transferOrder/list', qs.stringify({
+  pageNumber,
+  filters: JSON.stringify([{
+      property: "from_ent_name",
+      operator: "like",
+      value: from_ent_name
+    },
+    {
+      property: "to_ent_name",
+      operator: "like",
+      value: to_ent_name
     },
     {
       property: "status",
@@ -107,58 +174,79 @@ export const GetNewsList = (pageNumber, title, time_l, time_r, status, category_
       value: status
     },
     {
-      property: "category_id",
+      property: "create_time",
       operator: "eq",
-      value: category_id
-    }
+      value: create_time
+    },
   ]),
   pageSize: 20
 }))
 
-//删除文章
-export const DelArticle = (articleId) => req('delete', 'cms/article', {
-  articleId
-})
 
-//驳回文章
-export const RejectArticle = (id, reject) => req('put', 'cms/article/reject', {
+//修改成交项目状态
+export const RejectAgreeMana = (id, status, reject) => req('put', 'trade/transferOrder/status', {
   id,
+  status,
   reject
 })
 
-//修改文章状态
-export const PassArticle = (id, status) => req('put', 'cms/article/status', qs.stringify({
-  id,
-  status
-}))
-
-//获取文章详情
-export const GetArticleDetail = (articleId) => req('get', 'cms/article', {
-  articleId
+//获取成交项目详情
+export const GetAgreeManaData = (id) => req('get', 'trade/transferOrder', {
+  id
 })
 
-//编辑文章详情
-export const EditNewsData = (form) => req('put', 'cms/article', qs.stringify({
+//编辑成交项目详情
+export const EditAgreeData = (form) => req('put', 'trade/transferOrder', qs.stringify({
   id: form.id,
-  title: form.title,
-  image: form.image,
-  description: form.description,
-  author: form.author,
-  categoryId: form.categoryId,
-  home_news: form.home_news,
-  content: form.content
+  status: form.status,
+  totalAmount: form.totalAmount,
+  serviceFee: form.serviceFee,
 }))
 
-//发布文章
-export const PostNews = (form) => req('post', 'cms/article', qs.stringify({
-  title: form.title,
-  image: form.image,
-  description: form.description,
-  author: form.author,
-  categoryId: form.categoryId,
-  home_news: form.home_news,
-  content: form.content
+// 管理成交单
+export const GetDoneMana = (pageNumber, type, status, create_time, project_name, buy_ent_name, sell_ent_name) => req('post', 'trade/tradedOrder/list', qs.stringify({
+  pageNumber,
+  filters: JSON.stringify([{
+      property: "type",
+      operator: "eq",
+      value: type
+    },
+    {
+      property: "status",
+      operator: "eq",
+      value: status
+    },
+    {
+      property: "create_time",
+      operator: "eq",
+      value: create_time
+    },
+    {
+      property: "project_name",
+      operator: "like",
+      value: project_name
+    },
+    {
+      property: "buy_ent_name",
+      operator: "like",
+      value: buy_ent_name
+    },
+    {
+      property: "sell_ent_name",
+      operator: "like",
+      value: sell_ent_name
+    },
+  ]),
+  pageSize: 20
 }))
+
+//编辑成交单
+export const EditDoneData = (form) => req('put', 'trade/tradedOrder', qs.stringify({
+  id: form.id,
+  totalAmount: form.totalAmount,
+  serviceFee: form.serviceFee,
+}))
+
 
 // 获取用户列表
 export const GetUserList = (pageNumber, name, phone) => req('post', 'system/user/list', qs.stringify({

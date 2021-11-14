@@ -30,10 +30,8 @@ Vue.prototype.$cookies = cookies;
 // 组件
 import Appheader from './components/AppHeader'
 import Appaside from './components/AppAside'
-import Appheadupload from './components/AppHeadUpload'
 Vue.component("Appheader", Appheader)
 Vue.component("Appaside", Appaside)
-Vue.component("Appheadupload", Appheadupload)
 
 
 Vue.config.productionTip = false

@@ -9,6 +9,7 @@
 						<el-breadcrumb-item :to="{ path: './' }">首页</el-breadcrumb-item>
 						<el-breadcrumb-item>内容管理</el-breadcrumb-item>
 					</el-breadcrumb>
+					<div class="tips"><p>点击标题可查看内容详情</p></div>
 					<div class="table-search">
 						<el-input
 							placeholder="请输入标题"
@@ -68,7 +69,9 @@
 							width="240px"
 						>
 							<template slot-scope="scope">
-								<span>{{ scope.row.title }}</span>
+								<a href="javascript:;" @click="openDetail(scope.row)">
+									{{ scope.row.title }}
+								</a>
 							</template>
 						</el-table-column>
 						<el-table-column :resizable="false" label="banner图" align="center">
@@ -131,13 +134,6 @@
 									}"
 									>编辑</router-link
 								>
-								<el-button
-									@click="openDetail(scope.row)"
-									type="primary"
-									size="mini"
-								>
-									详情
-								</el-button>
 								<el-button
 									@click.native.prevent="deleteRow(scope.row)"
 									type="danger"
@@ -461,6 +457,8 @@ export default {
 					if (action === "confirm") {
 						if (instance.inputValue == "") {
 							this.$message.error("请输入驳回原因");
+						}else if (instance.inputValue.length > 30) {
+							this.$message.error(`最多输入30个字；当前${instance.inputValue.length}个字`);
 						} else {
 							instance.confirmButtonLoading = true;
 							instance.confirmButtonText = "";
@@ -609,9 +607,13 @@ export default {
 			height: 100%;
 		}
 	}
+	a,
 	span {
 		white-space: nowrap;
 		text-overflow: ellipsis;
+	}
+	a {
+		color: #606266;
 	}
 }
 ._h4 {
@@ -649,10 +651,18 @@ export default {
 		max-width: calc(100% - 80px);
 	}
 }
-.el-table tr:hover {
+.el-table tr {
 	.edit-btn {
 		color: #fff !important;
 		text-decoration: none !important;
+	}
+}
+.el-table tr:hover {
+	.cell {
+		a {
+			text-decoration: underline;
+			color: #1a8cff;
+		}
 	}
 }
 </style>
