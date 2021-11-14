@@ -38,7 +38,8 @@
     "vue-router": "^3.0.1",
     "vuedraggable": "^2.24.3",
     "vuex": "^3.6.2",
-    "wangeditor": "^4.7.1"
+    "wangeditor": "^4.7.1",
+    "xlsx": "^0.17.4"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
@@ -86,6 +87,7 @@
     "postcss-url": "^7.2.1",
     "rimraf": "^2.6.0",
     "sass-loader": "^7.3.1",
+    "script-loader": "^0.7.2",
     "selenium-server": "^3.0.1",
     "semver": "^5.3.0",
     "shelljs": "^0.7.6",

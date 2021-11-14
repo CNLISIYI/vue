@@ -63,6 +63,18 @@
 							</li>
 						</ul>
 					</div>
+					<div class="echart-box clearfix" v-loading="loading">
+						<Appecharts
+							:domid="'echart-show'"
+							:option="optionShow"
+							width="50%"
+						></Appecharts>
+						<Appecharts
+							:domid="'echart-click'"
+							:option="optionClick"
+							width="50%"
+						></Appecharts>
+					</div>
 				</el-main>
 			</el-container>
 		</el-container>
@@ -71,6 +83,7 @@
 
 <script>
 import { GetHomeData } from "../../api/apis";
+let Echarts = require("echarts/lib/echarts");
 export default {
 	name: "AppHome",
 	data() {
@@ -92,6 +105,106 @@ export default {
 				listingMoney: 2, //挂牌成交总金额
 				declareQty: 9, //项目申报单总数量
 				gertQty: 40202, //项目减排总数量
+			},
+			optionShow: {
+				title: {
+					text: "30天内搜索展示趋势",
+					x: "center",
+				},
+				tooltip: {
+					show: true,
+					trigger: "axis",
+				},
+				xAxis: {
+					type: "category",
+					data: [],
+					boundaryGap: false,
+					splitLine: {
+						show: true,
+						lineStyle: {
+							color: ["#F6F6F6"],
+							width: 1,
+							type: "solid",
+						},
+					},
+					axisLine: {
+						lineStyle: {
+							color: ["#F6F6F6"],
+							width: 1,
+							type: "solid",
+						},
+					},
+					axisLabel: {
+						show: true,
+						textStyle: {
+							color: "#90A1B8",
+						},
+					},
+				},
+				yAxis: [
+					{
+						type: "value",
+						name: "",
+					},
+				],
+				series: [
+					{
+						name: "展示量",
+						data: [],
+						symbol: "none",
+						type: "line",
+					},
+				],
+			},
+			optionClick: {
+				title: {
+					text: "30天内搜索点击趋势",
+					x: "center",
+				},
+				tooltip: {
+					show: true,
+					trigger: "axis",
+				},
+				xAxis: {
+					type: "category",
+					data: [],
+					boundaryGap: false,
+					splitLine: {
+						show: true,
+						lineStyle: {
+							color: ["#F6F6F6"],
+							width: 1,
+							type: "solid",
+						},
+					},
+					axisLine: {
+						lineStyle: {
+							color: ["#F6F6F6"],
+							width: 1,
+							type: "solid",
+						},
+					},
+					axisLabel: {
+						show: true,
+						textStyle: {
+							color: "#90A1B8",
+						},
+					},
+				},
+				yAxis: [
+					{
+						type: "value",
+						name: "",
+					},
+				],
+				series: [
+					{
+						name: "点击量",
+						data: [],
+						symbol: "none",
+						type: "line",
+					},
+				],
 			},
 		};
 	},
@@ -116,23 +229,59 @@ export default {
 					this.$message.error(err);
 				});
 		},
+		getChartInfo() {
+			this.loading = true;
+			GetShopChart(this.$tools.pastDate(31), this.$tools.pastDate(1))
+				.then((res) => {
+					this.loading = false;
+					if (res.code == 0) {
+						if (res.body && res.body.dates) {
+							this.formData.total_show = res.body.total_show;
+							this.formData.total_click = res.body.total_click;
+							this.setData(res.body);
+						} else {
+							this.$message.error("暂无数据");
+						}
+					} else {
+						this.$message.error(res.msg);
+					}
+				})
+				.catch((err) => {
+					this.loading = false;
+					this.$message.error(err);
+				});
+		},
+		// 设置图表数据
+		setData(data) {
+			this.optionShow.xAxis.data = data.dates;
+			this.optionClick.xAxis.data = data.dates;
+			this.optionShow.series[0].data = data.y_show_value;
+			this.optionClick.series[0].data = data.y_click_value;
+			if (document.getElementById("echart-show")) {
+				this.loading = false;
+				Echarts.init(document.getElementById("echart-show")).setOption(
+					this.optionShow
+				);
+				Echarts.init(document.getElementById("echart-click")).setOption(
+					this.optionClick
+				);
+			}
+		},
 	},
 };
 </script>
 
 <style lang="scss" scoped>
-
 .col-gre {
-  color: #008000 !important;
+	color: #008000 !important;
 }
 
 .col-red {
-  color: #ff0000;
+	color: #ff0000;
 }
 
 ._h4 {
-  font-size: 18px;
-  font-weight: 600;
+	font-size: 18px;
+	font-weight: 600;
 }
-
 </style>

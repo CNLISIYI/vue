@@ -13,6 +13,9 @@ import VueClipboard from 'vue-clipboard2'
 Vue.use(ElementUI)
 Vue.use(VueClipboard)
 
+let Echarts = require('echarts/lib/echarts')
+import { GridComponent } from 'echarts/components';
+Echarts.use([GridComponent]);
 
 // 公共方法 数据 接口
 import tools from './utils/utils'
@@ -30,6 +33,8 @@ Vue.prototype.$cookies = cookies;
 // 组件
 import Appheader from './components/AppHeader'
 import Appaside from './components/AppAside'
+import Appecharts from './components/AppEcharts'
+Vue.component("Appecharts", Appecharts)
 Vue.component("Appheader", Appheader)
 Vue.component("Appaside", Appaside)
 

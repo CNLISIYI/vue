@@ -40,7 +40,17 @@
 					</div>
 					<div class="table-operate">
 						<el-button type="primary" @click="addInfos">录入信息</el-button>
-						<el-button type="primary">导入</el-button>
+						<div class="el-button el-button--primary">
+							<el-upload
+								:on-change="handleChange"
+								:http-request="uploadFile"
+								accept=".xlsx, .xls"
+								ref="upload"
+								:show-file-list="false"
+							>
+								<span>导入</span>
+							</el-upload>
+						</div>
 					</div>
 					<el-table
 						:data="tableData"
@@ -366,7 +376,7 @@ export default {
 		addInfos() {
 			this.addinfoShow = true;
 			this.ruleForm = {};
-			this.editid = ""
+			this.editid = "";
 		},
 		handleCurrentChange(val) {
 			this.currentPage = val;
@@ -389,6 +399,17 @@ export default {
 					});
 				})
 				.catch(() => {});
+		},
+		handleChange() {},
+		// 导入
+		uploadFile(param) {
+			let form = new FormData();
+			form.append("file", param.file);
+			form.append("updateSupport", true);
+			console.log(param)
+			// importData(form).then((res) => {
+			// 	console.log(res);
+			// });
 		},
 	},
 };
@@ -434,6 +455,11 @@ export default {
 	span {
 		white-space: nowrap;
 		text-overflow: ellipsis;
+	}
+}
+/deep/ .el-upload {
+	span {
+		color: #fff;
 	}
 }
 </style>
