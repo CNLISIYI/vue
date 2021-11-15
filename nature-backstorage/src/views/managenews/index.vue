@@ -45,12 +45,16 @@
 							<el-option
 								v-for="(item, index) in $state.typeopt"
 								:key="index"
-								:label="item.label"
-								:value="item.value"
+								:label="item.name"
+								:value="item.id"
 							>
 							</el-option>
 						</el-select>
-						<el-button slot="append" type="primary" icon="el-icon-search" @click="getnewslist"
+						<el-button
+							slot="append"
+							type="primary"
+							icon="el-icon-search"
+							@click="getnewslist"
 							>搜索</el-button
 						>
 					</div>
@@ -61,12 +65,17 @@
 						v-loading="loading"
 						key="table"
 					>
-						<el-table-column type="index" width="50" align="center"></el-table-column>
+						<el-table-column
+							type="index"
+							width="50"
+							align="center"
+						></el-table-column>
 						<el-table-column
 							:resizable="false"
 							label="标题"
 							align="center"
 							width="240px"
+							class-name="overhide"
 						>
 							<template slot-scope="scope">
 								<a href="javascript:;" @click="openDetail(scope.row)">
@@ -96,7 +105,7 @@
 								<span>{{ scope.row.categoryId }}</span>
 							</template>
 						</el-table-column>
-						<el-table-column :resizable="false" label="状态" align="center">
+						<el-table-column :resizable="false" label="状态" align="center" width="70px">
 							<template slot-scope="scope">
 								<span v-if="scope.row.status == 1" class="green">已通过</span>
 								<span v-else-if="scope.row.status == 2" class="red"
@@ -110,7 +119,7 @@
 								<span>{{ scope.row.readnumber }}</span>
 							</template>
 						</el-table-column>
-						<el-table-column :resizable="false" label="发布时间" align="center">
+						<el-table-column :resizable="false" label="发布时间" align="center" width="100px">
 							<template slot-scope="scope">
 								<span>{{ scope.row.createTime }}</span>
 							</template>
@@ -120,7 +129,7 @@
 							label="操作"
 							fixed="right"
 							align="center"
-							width="260px"
+							width="250px"
 						>
 							<template slot-scope="scope">
 								<router-link
@@ -211,7 +220,7 @@
 							</div>
 							<div class="card-item w25">
 								<span>提交人：</span>
-								<span>{{ artData.userId }}没有</span>
+								<span>{{ artData.userId }}</span>
 							</div>
 							<div class="card-item">
 								<span>是否显示在首页推荐位：</span>
@@ -265,13 +274,13 @@
 									>
 								</div>
 								<div v-else>
-									<div class="card-item">
+									<div class="card-item w25">
 										<span>审核时间：</span>
-										<span>{{ artData.releaseTime }}没有</span>
+										<span>{{ artData.releaseTime }}</span>
 									</div>
 									<div class="card-item">
 										<span>审批人员：</span>
-										<span>{{ artData.userId }}没有</span>
+										<span>{{ artData.userId }}</span>
 									</div>
 								</div>
 							</div>
@@ -308,44 +317,7 @@ export default {
 			loading: false, //loading
 			currentPage: 1, //分页数据
 			total: 0,
-			tableData: [
-				{
-					id: 5, //轮播图id
-					title: "本交所动态本交所动态本交所动态啊", //轮播图标题
-					image:
-						"http://image.yuncaigou.net/newyuncaigou/images/1630658468_160.jpg", //轮播图片
-					url: "url", //跳转连接
-					status: "0", //状态(0->待审批，1->已通过，2->已驳回)
-					orders: 3, //排序
-					reject: null, //驳回原因
-					delFlag: "0", //删除标记删除标志（0代表存在 1代表删除）
-					createTime: null, //创建时间
-					description: "本交所动态本交所动态本交所动态啊",
-				},
-				{
-					id: 5, //轮播图id
-					title: "周三", //轮播图标题
-					image:
-						"http://image.yuncaigou.net/newyuncaigou/images/1630658468_160.jpg", //轮播图片
-					url: "url", //跳转连接
-					status: "1", //状态(0->待审批，1->已通过，2->已驳回)
-					orders: 2, //排序
-					reject: null, //驳回原因
-					createTime: null, //创建时间
-				},
-				{
-					id: 5, //轮播图id
-					title: "周三", //轮播图标题
-					image:
-						"http://image.yuncaigou.net/newyuncaigou/images/1630658468_160.jpg", //轮播图片
-					url: "url", //跳转连接
-					status: "2", //状态(0->待审批，1->已通过，2->已驳回)
-					orders: 1, //排序
-					reject: "sdasdasdasadhasd", //驳回原因
-					delFlag: "0", //删除标记删除标志（0代表存在 1代表删除）
-					createTime: null, //创建时间
-				},
-			],
+			tableData: [],
 			choosedate: [],
 			selectval: "",
 			typeId: "",
@@ -379,28 +351,7 @@ export default {
 			searchwords: "",
 			detailid: "",
 			detailShow: false,
-			artData: {
-				id: 8, //内容id
-				categoryId: null, //内容所处栏目id
-				title: "标题5", //内容标题
-				author: "本站编辑5", //作者
-				fromurl: null, //转载来源网址
-				image:
-					"http://image.yuncaigou.net/newyuncaigou/images/1630658468_160.jpg", //封面图
-				keywords: "标题5", //关键字
-				description: "内容摘要5", //简介
-				status: 0, //状态(-1:不通过,0未审核,1:通过)
-				userId: null, //发布人id
-				readnumber: null, //阅读数量
-				top: 0, //置顶等级
-				orders: null, //排序
-				delFlag: null, //删除标记删除标志（0代表存在 1代表删除）
-				homeNews: 0, //首页推荐新闻（0:不推荐,1:发布时推荐,2:编辑时推荐）
-				reject: "驳回1", //驳回原因
-				content: "内容", //文章内容
-				createTime: "2021-10-29 03:19:20", //创建日期
-				releaseTime: null, //发布日期},
-			},
+			artData: {},
 		};
 	},
 	created() {},
@@ -455,10 +406,12 @@ export default {
 				cancelButtonText: "取消",
 				beforeClose: (action, instance, done) => {
 					if (action === "confirm") {
-						if (instance.inputValue == "") {
+						if (!instance.inputValue) {
 							this.$message.error("请输入驳回原因");
-						}else if (instance.inputValue.length > 30) {
-							this.$message.error(`最多输入30个字；当前${instance.inputValue.length}个字`);
+						} else if (instance.inputValue.length > 30) {
+							this.$message.error(
+								`最多输入30个字；当前${instance.inputValue.length}个字`
+							);
 						} else {
 							instance.confirmButtonLoading = true;
 							instance.confirmButtonText = "";
@@ -468,6 +421,7 @@ export default {
 									instance.confirmButtonText = "确定";
 									if (res.code == 0) {
 										this.$message.success("操作成功");
+										this.getnewslist()
 										done();
 									} else {
 										this.$message.error(res.msg);
@@ -486,7 +440,6 @@ export default {
 				},
 			})
 				.then(({ value }) => {
-					this.getBannerList();
 				})
 				.catch(() => {});
 		},
@@ -596,24 +549,28 @@ export default {
 .el-input {
 	width: 220px;
 }
-/deep/.el-table .cell {
-	.img-box {
-		width: 100%;
-		height: 40px;
-		overflow: hidden;
-		cursor: zoom-in;
-		img {
+/deep/.el-table {
+	.cell {
+		.img-box {
 			width: 100%;
-			height: 100%;
+			height: 40px;
+			overflow: hidden;
+			cursor: zoom-in;
+			img {
+				width: 100%;
+				height: 100%;
+			}
+		}
+		a {
+			color: #606266;
 		}
 	}
-	a,
-	span {
-		white-space: nowrap;
-		text-overflow: ellipsis;
-	}
-	a {
-		color: #606266;
+	.overhide {
+		a,
+		span {
+			white-space: nowrap;
+			text-overflow: ellipsis;
+		}
 	}
 }
 ._h4 {

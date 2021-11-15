@@ -204,7 +204,7 @@
 							</div>
 							<div class="card-item">
 								<span>登录密码：</span>
-								<span>{{ deDatas.payPassword }}没有</span>
+								<span>{{  }}</span>
 							</div>
 							<div class="card-item">
 								<span>支付密码：</span>
@@ -400,68 +400,7 @@ export default {
 			loading: false, //loading
 			currentPage: 1, //分页数据
 			total: 0,
-			tableData: [
-				{
-					id: 3, //企业用户id
-					role: 0, //身份类型:0-项目业主 1-排放单位 2-项目代理人
-					entName: "某某某科技有限公司", //企业名称
-					operator: "张三", //经办人姓名
-					operatorMobile: "18000000000", //经办人手机号码
-					operatorId: "610523199403256577",
-					address: "凯旋大厦A座", //详细地址
-					status: 4, //状态:(0-待审核,1-通过,2-驳回,3-冻结,4-开启)
-					createTime: "2021-11-09 18:00:50", //提交时间
-					reject: "冻结原因", //处理原因:驳回或者冻结
-				},
-				{
-					id: 3, //企业用户id
-					role: 1, //身份类型:0-项目业主 1-排放单位 2-项目代理人
-					entName: "某某某科技有限公司", //企业名称
-					operator: "张三", //经办人姓名
-					operatorMobile: "18000000000", //经办人手机号码
-					operatorId: "610523199403256577",
-					address: "凯旋大厦A座", //详细地址
-					status: 3, //状态:(0-待审核,1-通过,2-驳回,3-冻结,4-开启)
-					createTime: "2021-11-09 18:00:50", //提交时间
-					reject: "冻结原因", //处理原因:驳回或者冻结
-				},
-				{
-					id: 3, //企业用户id
-					role: 2, //身份类型:0-项目业主 1-排放单位 2-项目代理人
-					entName: "某某某科技有限公司", //企业名称
-					operator: "张三", //经办人姓名
-					operatorMobile: "18000000000", //经办人手机号码
-					operatorId: "610523199403256577",
-					address: "凯旋大厦A座", //详细地址
-					status: 2, //状态:(0-待审核,1-通过,2-驳回,3-冻结,4-开启)
-					createTime: "2021-11-09 18:00:50", //提交时间
-					reject: "驳回原因", //处理原因:驳回或者冻结
-				},
-				{
-					id: 3, //企业用户id
-					role: 0, //身份类型:0-项目业主 1-排放单位 2-项目代理人
-					entName: "某某某科技有限公司", //企业名称
-					operator: "张三", //经办人姓名
-					operatorMobile: "18000000000", //经办人手机号码
-					operatorId: "610523199403256577",
-					address: "凯旋大厦A座", //详细地址
-					status: 1, //状态:(0-待审核,1-通过,2-驳回,3-冻结,4-开启)
-					createTime: "2021-11-09 18:00:50", //提交时间
-					reject: "冻结原因", //处理原因:驳回或者冻结
-				},
-				{
-					id: 3, //企业用户id
-					role: 0, //身份类型:0-项目业主 1-排放单位 2-项目代理人
-					entName: "某某某科技有限公司", //企业名称
-					operator: "张三", //经办人姓名
-					operatorMobile: "18000000000", //经办人手机号码
-					operatorId: "610523199403256577",
-					address: "凯旋大厦A座", //详细地址
-					status: 0, //状态:(0-待审核,1-通过,2-驳回,3-冻结,4-开启)
-					createTime: "2021-11-09 18:00:50", //提交时间
-					reject: "冻结原因", //处理原因:驳回或者冻结
-				},
-			],
+			tableData: [],
 			choosedate: "",
 			selectval: "",
 			typeId: "",
@@ -509,41 +448,7 @@ export default {
 			searchwords: "",
 			detailrow: {},
 			detailShow: false,
-			deDatas: {
-				id: 1, //企业id
-				type: 1,
-				role: 1, //身份类型:0-项目业主1-排放单位2-项目代理人
-				entName: "某某某科技有限公司", //企业名称
-				userName: "admin1", //登录名称
-				sysUser: 48,
-				licenseNumber: "91110000802100433B", //三证合一证件号码
-				legalPerson: "1", //法定代表姓名
-				legalPersonType: 1, //法人性质
-				licenseUrl:
-					"https://c-trade.oss-cn-zhangjiakou.aliyuncs.com/c-trade/618389aa1d9e8f762a52644b.jpg",
-				operator: "张三", //经办人姓名
-				operatorMobile: "18000000000", //经办人手机号码
-				operatorId: "610523199403256577",
-				mail: "10000@163.com",
-				province: 610000, //省
-				city: 610100, //市
-				district: 610112, //区
-				address: "凯旋大厦A座", //详细地址
-				telephone: "18000000000",
-				bankKey: "ABC",
-				bankNumber: "6220000000000000000",
-				depositProof:
-					"https://c-trade.oss-cn-zhangjiakou.aliyuncs.com/c-trade/61838d771d9e8f762a52644c.jpg",
-				payPassword: "Qq000000",
-				status: 4, //状态:0-待审核,1-通过,2-驳回,3-开启,4-冻结
-				createTime: "2021-11-09 18:00:50",
-				reject: "冻结原因", //驳回或冻结原因
-				industryName: "所属行业name", //所属行业
-				deposit: 446, //剩余保证金金额
-				premiumReceived: 5000, //缴纳金额
-				reviewerUserName: "admin1", //审批人员
-				auditCreateTime: "2021-11-10 11:41:53", //审批时间
-			},
+			deDatas: {},
 		};
 	},
 	created() {},

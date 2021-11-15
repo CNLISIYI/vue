@@ -2,7 +2,8 @@ import state from './state'
 import cookies from 'vue-cookies'
 import {
   GetAllIds,
-  GetRoleList
+  GetRoleList,
+  GetTypesList
 } from '../api/apis'
 
 
@@ -32,20 +33,28 @@ export const getAllIds = ({
 export const getAllRole = ({
   commit
 }) => {
-  if (state.allRoles) {
+  if (state.allRoles.length) {
     return
   } else {
     GetRoleList(-1).then((res) => {
       if (res.code == 0 && res.data) {
-        commit("getAllRole", res.data)
+        commit("getAllRole", res.data.records)
       }
     });
   }
 };
 
-// 用户id
-export const getUserId = ({
+// 获取全部类型
+export const getAllTypes = ({
   commit
 }) => {
-  commit("getUserId", cookies.get('ctrl_shop_toid'))
+  if (state.typeopt.length) {
+    return
+  } else {
+    GetTypesList().then((res) => {
+      if (res.code == 0 && res.data) {
+        commit("getAllTypes", res.data)
+      }
+    });
+  }
 };

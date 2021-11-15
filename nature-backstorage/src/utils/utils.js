@@ -81,6 +81,11 @@ const onlyEnglish = (value) => {
   return value.replace(/[^\a-\z\A-\Z]/g,'')
 }
 
+// 只能输入字母、数字
+const onlyEngNum = (value) => {
+  return value.replace(/[^\a-\z\A-\Z\d]/g,'')
+}
+
 // base64转url
 function imageBase64ToBlob(urlData, type = 'image/jpeg') {
   try {
@@ -155,5 +160,6 @@ export default {
   PhoneInput,
   imageBase64ToBlob,
   onlyNumber,
+  onlyEngNum,
   onlyEnglish
 }

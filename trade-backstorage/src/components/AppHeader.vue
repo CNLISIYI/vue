@@ -29,7 +29,7 @@ export default {
 	},
 	props: {},
 	mounted() {
-		this.getAllIds()
+		this.getAllIds();
 	},
 	computed: {
 		...mapState(["allIds"]),

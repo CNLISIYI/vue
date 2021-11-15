@@ -1,8 +1,8 @@
 import axios from 'axios'
 import cookies from 'vue-cookies'
 
-const token = '9fab022c-eee9-4893-b358-bdda4a0c9263'
-// const token = cookies.get('ctrl_shop_to')
+const authorization = 'Bearer 2005755a-cdfc-4128-89c0-fcd4b430cf69'
+// const authorization = 'Bearer '+cookies.get('ctrl_shop_to')
 
 //创建axios的一个实例
 var instance = axios.create({
@@ -10,7 +10,8 @@ var instance = axios.create({
   baseURL: '/admin-center/',
   headers: {
     'Accept':'*/*',
-    token: token
+    authorization: authorization,
+    'Content-Type': 'application/json',
   }
 })
 
@@ -44,11 +45,6 @@ instance.interceptors.response.use(function (response) {
 export default function (method, url, data = null) {
   method = method.toLowerCase();
   if (method == 'post') {
-    instance.headers = {
-      "token": token,
-      'Accept':'*/*',
-      'Content-Type': 'application/x-www-form-urlencoded'
-    }
     return instance.post(url, data)
   } else if (method == 'get') {
     return instance.get(url, {

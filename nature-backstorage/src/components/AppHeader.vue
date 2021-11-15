@@ -29,13 +29,13 @@ export default {
 	},
 	props: {},
 	mounted() {
-		this.getAllIds()
+		this.getAllTypes()
 	},
 	computed: {
-		...mapState(["allIds"]),
+		...mapState(["typeopt"]),
 	},
 	methods: {
-		...mapActions(["getAllIds"]),
+		...mapActions(["getAllTypes"]),
 		logout() {
 			userLogout(userName, clientId).then((res) => {
 				if (res.code == 0) {

@@ -116,7 +116,7 @@
 						>
 							<template slot-scope="scope">
 								<span v-if="scope.row.isOnline == '0'">否</span>
-								<span v-else-if="scope.row.isOnline == '1'">是</span>
+								<span v-else>是</span>
 							</template>
 						</el-table-column>
 						<el-table-column
@@ -158,7 +158,7 @@
 									size="mini"
 									type="warning"
 									@click.native.prevent="openedit(scope.row)"
-									v-if="scope.row.status == 0 || scope.row.status == 1"
+									v-if="scope.row.status == 0"
 									>编辑</el-button
 								>
 								<el-button
@@ -422,64 +422,7 @@ export default {
 			loading: false, //loading
 			currentPage: 1, //分页数据
 			total: 0,
-			tableData: [
-				{
-					id: 1, //协议单id
-					reject: "驳回原因1111111111",
-					fromEntId: 1,
-					fromEntName: "1", //接收企业
-					toEntId: 2,
-					toEntName: "1", //转出企业
-					toEntOperator: "1",
-					toEntOperatorMobie: "1",
-					toEntLicenseNumber: "1",
-					projectId: 1, //项目id
-					projectName: "1", //项目名称
-					quantity: 11, //转让数量
-					price: 1, //转让金额
-					totalAmount: 2000, //交易总金额
-					serviceFee: 3000, //交易服务费
-					status: 0, //状态:0-待审核 1-已通过 2-已驳回 3-接收方待确认 4-接收方已拒绝
-					createTime: "2021-11-02 10:35:08", //提交时间
-					auditTime: "2021-11-02 10:35:11",
-					confirmTime: "2021-11-02 10:35:14",
-					isOnline: 1, //是否线上交易: 0否,1是
-					toTrEnterprise: null,
-					formTrEnterprise: null,
-					auditType: null,
-					userId: null,
-					userName: null,
-					auditCreateTime: null,
-				},
-				{
-					id: 1, //协议单id
-					reject: "驳回原因1111111111",
-					fromEntId: 1,
-					fromEntName: "1", //接收企业
-					toEntId: 2,
-					toEntName: "1", //转出企业
-					toEntOperator: "1",
-					toEntOperatorMobie: "1",
-					toEntLicenseNumber: "1",
-					projectId: 1, //项目id
-					projectName: "1", //项目名称
-					quantity: 11, //转让数量
-					price: 1, //转让金额
-					totalAmount: 2000, //交易总金额
-					serviceFee: 3000, //交易服务费
-					status: 1, //状态:0-待审核 1-已通过 2-已驳回 3-接收方待确认 4-接收方已拒绝
-					createTime: "2021-11-02 10:35:08", //提交时间
-					auditTime: "2021-11-02 10:35:11",
-					confirmTime: "2021-11-02 10:35:14",
-					isOnline: 1, //是否线上交易: 0否,1是
-					toTrEnterprise: null,
-					formTrEnterprise: null,
-					auditType: null,
-					userId: null,
-					userName: null,
-					auditCreateTime: null,
-				},
-			],
+			tableData: [],
 			choosedate: "",
 			selectval: "",
 			pickerOptions: {
@@ -522,110 +465,9 @@ export default {
 			searchout: "",
 			detailrow: {},
 			detailShow: false,
-			ruleForm: {},
+			ruleForm: { totalAmount: "", serviceFee: "" },
 			editshow: false,
-			deDatas: {
-				id: 1, //协议id
-				reject: "reject", //驳回原因
-				fromEntId: 1,
-				fromEntName: "1",
-				toEntId: 2,
-				toEntName: "1",
-				toEntOperator: "1",
-				toEntOperatorMobile: "1",
-				toEntLicenseNumber: "1",
-				projectId: 1,
-				projectName: "1", //项目名称
-				quantity: 11, //转让数量
-				price: 1, //转让价格
-				totalAmount: 2000, //交易总金额
-				serviceFee: 3000, //交易服务费
-				status: 3, //状态:0-待审核 1-已通过 2-已驳回 3-接收方待确认 4-接收方已拒绝
-				createTime: "2021-11-02 10:35:08", //提交时间
-				auditTime: "2021-11-02 10:35:11",
-				confirmTime: "2021-11-02 10:35:14",
-				isOnline: 1, //是否线上交易
-				toTrEnterprise: {
-					id: 2, //协议id
-					type: 2,
-					role: 2, //企业身份:注册主体身份 0-项目业主 1-排放单位 2-项目代理人
-					entName: "2", //企业名称
-					sysUser: 2,
-
-					licenseNumber: "2", //三证合一证件号码
-					legalPerson: "2",
-
-					legalPersonType: 2,
-
-					licenseUrl: "2",
-
-					operator: "2", //经办人姓名
-					operatorMobile: "2",
-
-					operatorId: "2",
-
-					mail: "2",
-
-					province: 2, //所在地区:省
-					city: 2, //所在地区:市
-					district: 2, //所在地区:区
-					address: "2", //详细地址
-					telephone: "2",
-
-					bankKey: "2",
-
-					bankNumber: "2",
-
-					depositProof: "2",
-
-					payPassword: "2",
-
-					status: 0, //状态:0-待审核 1-已通过 2-已驳回 3-接收方待确认 4-接收方已拒绝
-					createTime: "2021-11-09 18:00:50", //提交时间
-				}, //转出方信息----
-				formTrEnterprise: {
-					id: 1, //协议id
-					type: 1,
-
-					role: 1, //企业身份:注册主体身份 0-项目业主 1-排放单位 2-项目代理人
-					entName: "1", //企业名称
-					sysUser: 1,
-
-					licenseNumber: "1", //三证合一证件号码
-					legalPerson: "1",
-
-					legalPersonType: 1,
-
-					licenseUrl: "1",
-
-					operator: "1", //经办人姓名
-					operatorMobile: "1",
-
-					operatorId: "1",
-
-					mail: "1",
-
-					province: 1, //所在地区:省
-					city: 1, //所在地区:市
-					district: 1, //所在地区:区
-					address: "1", //详细地址
-					telephone: "1",
-
-					bankKey: "1",
-
-					bankNumber: "1",
-
-					depositProof: "1",
-
-					payPassword: "1",
-
-					status: 4, //状态:0-待审核 1-已通过 2-已驳回 3-接收方待确认 4-接收方已拒绝
-					createTime: "2021-11-09 18:00:50", //提交时间
-					reject: "冻结原因", //驳回原因
-				}, //接受方信息------
-				reviewerUserName: "admin1", //审批人
-				auditCreateTime: "2021-11-03 18:44:05", //审批时间
-			},
+			deDatas: {},
 		};
 	},
 	created() {},
@@ -683,12 +525,13 @@ export default {
 						} else {
 							instance.confirmButtonLoading = true;
 							instance.confirmButtonText = "";
-							RejectAgreeMana(row.id, 4, instance.inputValue)
+							RejectAgreeMana(row.id, 2, instance.inputValue)
 								.then((res) => {
 									instance.confirmButtonLoading = false;
 									instance.confirmButtonText = "确定";
 									if (res.code == 0) {
 										this.$message.success("操作成功");
+										this.detailShow = false;
 										done();
 									} else {
 										this.$message.error(res.msg);
@@ -727,11 +570,12 @@ export default {
 		passRow(row) {
 			this.$confirm("确定通过该用户的协议转让申请？")
 				.then(() => {
-					RejectAgreeMana(row.id, 3, "").then((res) => {
+					RejectAgreeMana(row.id, 1, "").then((res) => {
 						if (res.code == 0) {
 							this.$message.success("操作成功");
 							this.getlist();
 							setTimeout(() => {
+								this.detailShow = false;
 								done();
 							}, 400);
 						} else {
@@ -750,8 +594,8 @@ export default {
 		// 打开编辑
 		openedit(row) {
 			this.detailrow = row;
-			this.ruleForm.totalAmount = row.totalAmount;
-			this.ruleForm.serviceFee = row.serviceFee;
+			this.ruleForm.totalAmount = row.totalAmount ? row.totalAmount : "";
+			this.ruleForm.serviceFee = row.serviceFee ? row.serviceFee : "";
 			this.editshow = true;
 		},
 		// 编辑保存
@@ -823,10 +667,6 @@ export default {
 			width: 100%;
 			height: 100%;
 		}
-	}
-	a {
-		white-space: nowrap;
-		text-overflow: ellipsis;
 	}
 	a {
 		color: #606266;

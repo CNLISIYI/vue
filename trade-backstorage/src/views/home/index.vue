@@ -91,24 +91,12 @@ export default {
 			userinfo: {}, //用户账户
 			loading: false,
 			datas: {
-				underReview: 1, //待审批用户
-				carbonRemitQty: 8, //待审批碳汇项目
-				agreementApproval: 1, //待审批协议转让
-				settlementApproval: 1, //待审批项目结算
 			},
 			topdata: {
-				userQty: 3, //用户总数量
-				approvedUserQty: 1, //已审核用户
-				agreementQty: 1, //协议成交单总数量
-				agreementMoney: 1, //协议成交总金额
-				listingQty: 2, //挂牌成交单总数量
-				listingMoney: 2, //挂牌成交总金额
-				declareQty: 9, //项目申报单总数量
-				gertQty: 40202, //项目减排总数量
 			},
 			optionShow: {
 				title: {
-					text: "30天内搜索展示趋势",
+					text: "行情信息",
 					x: "center",
 				},
 				tooltip: {
@@ -158,7 +146,7 @@ export default {
 			},
 			optionClick: {
 				title: {
-					text: "30天内搜索点击趋势",
+					text: "成交额统计图",
 					x: "center",
 				},
 				tooltip: {

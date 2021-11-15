@@ -32,12 +32,12 @@ export const getAllIds = ({
 export const getAllRole = ({
   commit
 }) => {
-  if (state.allRoles) {
+  if (state.allRoles.length) {
     return
   } else {
     GetRoleList(-1).then((res) => {
       if (res.code == 0 && res.data) {
-        commit("getAllRole", res.data)
+        commit("getAllRole", res.data.records)
       }
     });
   }

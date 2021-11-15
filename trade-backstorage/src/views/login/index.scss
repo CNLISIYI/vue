@@ -3,10 +3,7 @@
   background: #f7f7f7;
   border-radius: 16px;
   padding: 30px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  margin: 100px auto;
 
   h4 {
     text-align: center;
@@ -27,10 +24,10 @@
 }
 
 .forget-p {
-  float: right;
-  display: inline-block;
+  display: block;
   cursor: pointer;
   margin-top: 20px;
+  text-align: right;
 }
 
 .forget-p:hover {

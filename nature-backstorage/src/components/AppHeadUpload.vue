@@ -35,23 +35,33 @@ export default {
 				this.$confirm("确定上传这张图片?")
 					.then(() => {
 						this.loading = true;
-						PostImage(_file)
+						let formData = new FormData();
+						formData.append("file", _file);
+						this.$axios
+							.post("admin-center/common/upload-image", formData, {
+								headers: {
+									"Content-Type": "multiple/form-data",
+									Accept: "*/*",
+									authorization: "Bearer 2005755a-cdfc-4128-89c0-fcd4b430cf69",
+								},
+							})
 							.then((res) => {
 								this.loading = false;
-								if (res.code == 0) {
+								if (res.data.code == 0) {
 									this.$message.success("上传成功");
-									this.imgurl = res.url
-									this.$emit("handlefile", res.url);
+									this.imgurl = res.data.data.url;
+									this.$emit("handlefile", res.data.data.url);
 								} else {
 									this.$message.error(res.msg);
 								}
 							})
-							.catch((err) => {
+							.catch(() => {
 								this.loading = false;
-								this.$message.error(err);
 							});
 					})
-					.catch(() => {});
+					.catch(() => {
+						_file = ''
+					});
 			}
 		},
 	},

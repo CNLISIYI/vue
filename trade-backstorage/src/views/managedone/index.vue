@@ -222,66 +222,7 @@ export default {
 			loading: false, //loading
 			currentPage: 1, //分页数据
 			total: 0,
-			tableData: [
-				{
-					id: 1, //成交单id
-					type: 1, //交易类型: 0-挂牌成交单  1-协议转让成交单
-					transferId: 1,
-
-					projectId: 1,
-
-					projectName: "1", //项目名称
-					projectAddress: "1",
-
-					projectType: "11",
-
-					sellEntId: 1,
-
-					sellEntName: "1", //卖方企业
-					buyEntId: 1,
-
-					buyEntName: "1", //买方企业
-					sellSellingCode: "1",
-
-					buySellingCode: "1",
-
-					quantity: 1, //交易数量
-					price: 1, //交易单价
-					totalAmount: 1, //交易金额
-					serviceFee: 1, //交易服务费
-					status: 1, //状态:0-待结算 1-已结算
-					createTime: "2021-11-02 10:35:00", //交易时间
-				},
-				{
-					id: 2, //成交单id
-					type: 0, //交易类型: 0-挂牌成交单  1-协议转让成交单
-					transferId: 2,
-
-					projectId: 2,
-
-					projectName: "2", //项目名称
-					projectAddress: "2",
-
-					projectType: "2",
-
-					sellEntId: 2,
-
-					sellEntName: "2", //卖方企业
-					buyEntId: 2,
-
-					buyEntName: "2", //买方企业
-					sellSellingCode: "2",
-
-					buySellingCode: "22",
-
-					quantity: 2, //交易数量
-					price: 2, //交易单价
-					totalAmount: 2, //交易金额
-					serviceFee: 2, //交易服务费
-					status: 0, //状态:0-待结算 1-已结算
-					createTime: "2021-11-05 10:35:00", //交易时间
-				},
-			],
+			tableData: [],
 			choosedate: "",
 			selectval: "",
 			typeId: "",
@@ -326,7 +267,7 @@ export default {
 			searchout: "",
 			searchname: "",
 			detailrow: {},
-			ruleForm: {},
+			ruleForm: { totalAmount: "", serviceFee: "" },
 			editshow: false,
 		};
 	},
@@ -350,7 +291,7 @@ export default {
 				this.choosedate,
 				this.searchname,
 				this.searchin,
-				this.searchout,
+				this.searchout
 			).then((res) => {
 				if (res.code == 0) {
 					this.loading = false;
@@ -380,6 +321,8 @@ export default {
 		// 编辑保存
 		editBtn() {
 			this.ruleForm.id = this.detailrow.id;
+			this.ruleForm.serviceFee = parseInt(this.ruleForm.serviceFee);
+			this.ruleForm.totalAmount = parseInt(this.ruleForm.totalAmount);
 			EditDoneData(this.ruleForm).then((res) => {
 				if (res.code == 0) {
 					this.$message.success("操作成功");

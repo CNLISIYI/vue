@@ -267,10 +267,10 @@
 								<span>申报时间：</span>
 								<span>{{ deDatas.formatDeclareTime }}</span>
 							</div>
-							<div class="card-item w100" v-if="deDatas.projectFileList">
+							<div class="card-item w100" v-if="deDatas.otherFile">
 								<span>其他相关文件：</span>
 								<p
-									v-for="(item, index) in deDatas.projectFileList"
+									v-for="(item, index) in deDatas.otherFile"
 									:key="index"
 								>
 									<span>{{ item.name }}</span>
@@ -432,61 +432,8 @@ export default {
 			loading: false, //loading
 			currentPage: 1, //分页数据
 			total: 0,
-			tableData: [
-				{
-					id: 1, //碳汇id
-					reject: "reject", //处理原因
-					userName: null,
-					entName: "1", //申报企业
-					entId: null,
-					name: "项目名称", //项目名称
-					address: "项目地址", //项目地址
-					recordNumber: "备案号", //备案号
-					recordTime: "2021-11-02 10:35:08", //备案时间
-					owner: null,
-					location: null,
-					category: null,
-					type: "项目类型",
-					methodology: null,
-					creditingPeriod: null,
-					preBalanceTime: null,
-					accreditedInstitutions: null,
-					accreditedReport: null,
-					preEmissionReduction: 100, //预计减排数量
-					certifiedEmissionReduction: 100, //已审批减排数量
-					lockedEmissionReduction: null,
-					tradedEmissionReduction: null,
-					remainEmissionReduction: null,
-					status: 0, //状态: 0-项目待审批、1-项目已通过、2-项目已驳回、3-结算待审批、4-结算已通过、5-结算已驳回
-					declareTime: "2021-11-02 10:35:08", //申报时间
-					description: null,
-					auditType: null,
-					otherFile: null,
-				},
-			],
-			detableData: [
-				{
-					id: 1, //碳汇id
-					type: 1, //项目类型
-					transferId: 1,
-					projectId: 1, //项目id
-					projectName: "1",
-					projectAddress: "1",
-					projectType: 11,
-					sellEntId: 1,
-					sellEntName: "1",
-					buyEntId: 1,
-					buyEntName: "1",
-					sellSellingCode: "1",
-					buySellingCode: "1",
-					quantity: 1, //交易数量(吨)
-					price: 1, //交易单价(元)
-					totalAmount: 1, //交易总金额(元)
-					serviceFee: 1, //交易服务费(元)
-					status: 1, //状态:0-项目待审批、1-项目已通过、2-项目已驳回、3-结算待审批、4-结算已通过、5-结算已驳回
-					createTime: "2021-11-02 10:35:00", //交易时间
-				},
-			],
+			tableData: [],
+			detableData: [],
 			choosedate: "",
 			selectval: "",
 			typeId: "",
@@ -531,51 +478,7 @@ export default {
 			searchcom: "",
 			detailrow: {},
 			detailShow: false,
-			deDatas: {
-				id: 1, //碳汇id
-				name: "项目名称", //项目名称
-				address: "项目地址", //项目地址
-				owner: "项目业主", //项目业主
-				location: "地址位置", //地理位置
-				category: "项目类别", //项目类别
-				type: "项目类型", //项目类型
-				recordNumber: "备案号", //备案号
-				recordTime: "2021年11月02日", //备案时间
-				methodology: "方法学", //方法学
-				creditingPeriod: "计入期", //计入期
-				accreditedInstitutions: "审定机构", //审定机构
-				accreditedReport: "审定报告文件", //审定报告
-				description: "项目描述",
-				preEmissionReduction: 100, //预计减排量
-				lockedEmissionReduction: null,
-				tradedEmissionReduction: null,
-				remainEmissionReduction: null,
-				status: 0, //状态:0-项目待审批、1-项目已通过、2-项目已驳回、3-结算待审批、4-结算已通过、5-结算已驳回
-				declareTime: "2021-11-02 10:35:08",
-				formatDeclareTime: "2021年11月02日", //申报时间
-				preBalanceTime: "2021-11-02", //预计结算时间
-				certifiedEmissionReduction: 100, //已审批减排量
-				projectFileList: [
-					{
-						id: 1, //碳汇id
-						projectId: 1, //项目id
-						name: "2", //项目名称
-						url: "http://image.yuncaigou.net/newyuncaigou/images/1630658468_160.jpg", //文件地址
-						type: 4, //项目类型
-					},
-				],
-				trTradedOrderList: [
-					{
-						id: 1, //碳汇id
-						type: 1, //项目类型
-						transferId: 1,
-					},
-				],
-				userId: null,
-				userName: "1", //审批人员
-				auditCreateTime: "2021-11-02 23:17:10", //审批时间
-				reject: "reject", //驳回原因
-			},
+			deDatas: {},
 		};
 	},
 	created() {},
@@ -639,6 +542,7 @@ export default {
 									instance.confirmButtonText = "确定";
 									if (res.code == 0) {
 										this.$message.success("操作成功");
+										this.detailShow = false;
 										done();
 									} else {
 										this.$message.error(res.msg);
@@ -697,6 +601,7 @@ export default {
 									this.getlist();
 									setTimeout(() => {
 										done();
+										this.detailShow = false;
 									}, 400);
 								} else {
 									this.$message.error(res.msg);
@@ -766,10 +671,6 @@ export default {
 }
 /deep/.el-table .cell {
 	a {
-		white-space: nowrap;
-		text-overflow: ellipsis;
-	}
-	a {
 		color: #606266;
 	}
 }
@@ -814,6 +715,11 @@ export default {
 	width: 100%;
 	span {
 		max-width: calc(100% - 80px);
+	}
+	p {
+		span {
+			max-width: 100%;
+		}
 	}
 }
 

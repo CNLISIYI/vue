@@ -58,7 +58,7 @@ export default {
 			});
 		},
 		submitForm() {
-			PostFee(this.feedata.entId, this.feedata.rate).then((res) => {
+			PostFee(this.feedata.tenantId, this.feedata.rate).then((res) => {
 				if (res.code == 0) {
 					this.$message.success("保存成功");
 				} else {

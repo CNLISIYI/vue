@@ -84,17 +84,7 @@ export default {
 			loading: false, //loading
 			currentPage: 1, //分页数据
 			total: 0,
-			tableData: [
-				{
-					operId: 2, //日志id
-					title: "操作功能", //操作功能
-					businessType: "1", //操作按钮:0其它 1新增 2修改 3删除 4通过 5驳回
-					operName: "操作人员", //操作人员
-					status: "0",
-					operTime: "2021-11-09 14:34:39", //操作时间
-					operIp: "127.0.0.1", //操作IP
-				},
-			],
+			tableData: [],
 		};
 	},
 	created() {},

@@ -44,7 +44,11 @@
 						v-loading="loading"
 						key="table"
 					>
-						<el-table-column type="index" width="50" align="center"></el-table-column>
+						<el-table-column
+							type="index"
+							width="50"
+							align="center"
+						></el-table-column>
 						<el-table-column :resizable="false" label="姓名" align="center">
 							<template slot-scope="scope">
 								<span>{{ scope.row.nickName }}</span>
@@ -67,7 +71,7 @@
 						</el-table-column>
 						<el-table-column :resizable="false" label="登录密码" align="center">
 							<template slot-scope="scope">
-								<span>{{ scope.row.password }}没有</span>
+								<span>{{ scope.row.password }}</span>
 							</template>
 						</el-table-column>
 						<el-table-column :resizable="false" label="所属部门" align="center">
@@ -123,7 +127,7 @@
 					<el-drawer
 						:title="editid ? '编辑人员' : '新增人员'"
 						:visible.sync="addShow"
-						size="35%"
+						size="40%"
 					>
 						<el-form
 							:model="ruleForm"
@@ -151,12 +155,11 @@
 									v-model="ruleForm.userName"
 									placeholder="请输入登录名称"
 									type="text"
-									maxlength="12"
-									@input="
-										ruleForm.userName = $tools.onlyEnglish(ruleForm.userName)
-									"
+									maxlength="15"
 								></el-input>
-								<p class="input-txt">登录名称由6-12位字母组成</p>
+								<p class="input-txt">
+									登录名由字母开头的4到15个字符组成，只能包含数字字母下划线
+								</p>
 							</el-form-item>
 							<el-form-item label="登录密码" required>
 								<el-input
@@ -208,8 +211,8 @@
 </template>
 
 <script>
-import { GetUserList, DelUser, GetUsers ,EditUserData,PostUserData} from "../../api/apis";
-import { mapState } from "vuex";
+import { GetUserList, DelUser, GetUsers, PostUserData } from "../../api/apis";
+import { mapState, mapActions } from "vuex";
 export default {
 	name: "AppSetUser",
 
@@ -219,16 +222,6 @@ export default {
 			currentPage: 1, //分页数据
 			total: 0,
 			tableData: [
-				{
-					id: 49, //用户id
-					userName: "admin2", //姓名(用户名)
-					nickName: "昵称", //登陆名称(用户昵称)
-					roleName: "管理员3", //对应角色(用户角色)
-					status: 0,
-					phone: "18222222221", //手机号码
-					createTime: "2021-11-08 15:04:20", //创建时间
-					deptName: "部门", //所属部门
-				},
 			],
 			searchname: "",
 			searchtell: "",
@@ -241,14 +234,16 @@ export default {
 	},
 	created() {},
 	computed: {
-		...mapState(["userData"]),
+		...mapState(["allRoles"]),
 	},
 	watch: {},
 	mounted() {
 		this.getuserList();
+		this.getAllRole();
 	},
 
 	methods: {
+		...mapActions(["getAllRole"]),
 		// 获取列表
 		getuserList() {
 			this.loading = true;
@@ -303,7 +298,7 @@ export default {
 			});
 			this.addShow = true;
 		},
-		// 新增保存
+		// 保存
 		addSubmit() {
 			if (!/^1[3456789]\d{9}$/.test(this.ruleForm.phone)) {
 				this.$message.error("请输入正确手机号");
@@ -315,33 +310,19 @@ export default {
 				this.$message.error("请选择对应角色");
 			} else {
 				this.uploading = true;
-				if (this.ruleForm.id) {
-					EditUserData(this.ruleForm).then((res) => {
-						if (res.code == 0) {
-							this.uploading = false;
-							this.$message.success("保存成功");
-							this.ruleForm = {};
-							this.addShow = false;
-							this.getuserList();
-						} else {
-							this.uploading = false;
-							this.$message.error(res.msg);
-						}
-					});
-				} else {
-					PostUserData(this.ruleForm).then((res) => {
-						if (res.code == 0) {
-							this.uploading = false;
-							this.$message.success("保存成功");
-							this.ruleForm = {};
-							this.addShow = false;
-							this.getuserList();
-						} else {
-							this.uploading = false;
-							this.$message.error(res.msg);
-						}
-					});
-				}
+				this.ruleForm.id = this.ruleForm.id ? this.ruleForm.id : "";
+				PostUserData(this.ruleForm).then((res) => {
+					if (res.code == 0) {
+						this.uploading = false;
+						this.$message.success("保存成功");
+						this.ruleForm = {};
+						this.addShow = false;
+						this.getuserList();
+					} else {
+						this.uploading = false;
+						this.$message.error(res.msg);
+					}
+				});
 			}
 		},
 	},

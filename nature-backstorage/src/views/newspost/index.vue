@@ -29,7 +29,7 @@
 							<el-form-item label="封面图片" required>
 								<Appheadupload
 									@handlefile="handleimg"
-									ref="logoupload"
+									ref="headupload"
 								></Appheadupload>
 								<p class="input-txt">
 									注：图片大小不可超过2M，格式支持JPG、GIF、png格式；推荐位图片大小长宽为625*230
@@ -69,8 +69,8 @@
 									<el-option
 										v-for="(item, index) in $state.typeopt"
 										:key="index"
-										:label="item.label"
-										:value="item.value"
+										:label="item.name"
+										:value="item.id"
 									>
 									</el-option>
 								</el-select>
@@ -108,15 +108,14 @@ import E from "wangeditor";
 
 export default {
 	name: "AppNewsPost",
-	inject:['reload'], 
+	inject: ["reload"],
 	data() {
 		return {
 			editloading: false, //编辑loading
 			isedit: false, //是否为编辑
 			editor: "", //富文本
-			quoteway: '1',
-			ruleForm: {
-			},
+			quoteway: "1",
+			ruleForm: {},
 			postloading: false,
 		};
 	},
@@ -152,11 +151,13 @@ export default {
 					this.editloading = false;
 					if (res.code == 0) {
 						this.ruleForm = res.data;
+						this.ruleForm.homeNews = res.data.homeNews.toString();
 						// 富文本
 						if (res.data.content) {
 							this.editor.txt.html(res.data.content);
 						}
-						this.quoteway = res.data.author.indexOf("本站编辑") ? "1" : "2";
+						this.$refs.headupload.imgurl = res.data.image;
+						this.quoteway = res.data.author.indexOf("本站编辑") < 0 ? "2" : "1";
 					} else {
 						this.$message.error(err);
 					}
@@ -185,16 +186,19 @@ export default {
 				this.$message.error("请完善作者、类型和推荐位相关信息");
 			} else {
 				formCopy.id = this.$route.params.newsid ? this.$route.params.newsid : 0;
+				formCopy.content = this.editor.txt.html();
 				if (this.isedit) {
 					this.postloading = true;
 					EditNewsData(formCopy)
 						.then((res) => {
-							this.postloading = false;
 							if (res.code == 0) {
-								this.$message.success("发布成功");
-								this.$route.params.pro_id = 0;
-								this.reload();
+								this.postloading = false;
+								this.$message.success("保存成功");
+								this.$router.push({
+									name: "managenews",
+								});
 							} else {
+								this.postloading = false;
 								this.$message.error(res.msg);
 							}
 						})
@@ -220,7 +224,6 @@ export default {
 				}
 			}
 		},
-	
 	},
 };
 </script>

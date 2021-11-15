@@ -10,9 +10,7 @@
 						<el-breadcrumb-item>banner图管理</el-breadcrumb-item>
 					</el-breadcrumb>
 					<div class="table-operate">
-						<el-button type="primary" @click="addbannerShow = true"
-							>新增banner</el-button
-						>
+						<el-button type="primary" @click="addbanner">新增banner</el-button>
 					</div>
 					<el-table
 						:data="tableData"
@@ -21,7 +19,11 @@
 						v-loading="loading"
 						key="table"
 					>
-						<el-table-column type="index" width="50" align="center"></el-table-column>
+						<el-table-column
+							type="index"
+							width="50"
+							align="center"
+						></el-table-column>
 						<el-table-column
 							:resizable="false"
 							label="标题"
@@ -39,7 +41,12 @@
 								</div>
 							</template>
 						</el-table-column>
-						<el-table-column :resizable="false" label="跳转链接" align="center">
+						<el-table-column
+							:resizable="false"
+							label="跳转链接"
+							align="center"
+							width="200px"
+						>
 							<template slot-scope="scope">
 								<span>{{ scope.row.url }}</span>
 							</template>
@@ -141,7 +148,7 @@
 							<el-form-item label="banner图" required>
 								<Appheadupload
 									@handlefile="handleimg"
-									ref="logoupload"
+									ref="headupload"
 								></Appheadupload>
 								<p class="input-txt">
 									注：图片大小不可超过2M，格式支持JPG、GIF、png；长宽为1920*575
@@ -197,43 +204,7 @@ export default {
 			loading: false, //loading
 			currentPage: 1, //分页数据
 			total: 0,
-			tableData: [
-				{
-					id: 5, //轮播图id
-					title: "周三", //轮播图标题
-					image:
-						"http://image.yuncaigou.net/newyuncaigou/images/1630658468_160.jpg", //轮播图片
-					url: "url", //跳转连接
-					status: "0", //状态(0->待审批，1->已通过，2->已驳回)
-					orders: 3, //排序
-					reject: null, //驳回原因
-					delFlag: "0", //删除标记删除标志（0代表存在 1代表删除）
-					createTime: null, //创建时间
-				},
-				{
-					id: 5, //轮播图id
-					title: "周三", //轮播图标题
-					image:
-						"http://image.yuncaigou.net/newyuncaigou/images/1630658468_160.jpg", //轮播图片
-					url: "url", //跳转连接
-					status: "1", //状态(0->待审批，1->已通过，2->已驳回)
-					orders: 2, //排序
-					reject: null, //驳回原因
-					createTime: null, //创建时间
-				},
-				{
-					id: 5, //轮播图id
-					title: "周三", //轮播图标题
-					image:
-						"http://image.yuncaigou.net/newyuncaigou/images/1630658468_160.jpg", //轮播图片
-					url: "url", //跳转连接
-					status: "2", //状态(0->待审批，1->已通过，2->已驳回)
-					orders: 1, //排序
-					reject: "sdasdasdasadhasd", //驳回原因
-					delFlag: "0", //删除标记删除标志（0代表存在 1代表删除）
-					createTime: null, //创建时间
-				},
-			],
+			tableData: [],
 			addbannerShow: false, //新增弹窗
 			ruleForm: {},
 			editid: 0,
@@ -275,7 +246,7 @@ export default {
 			} else if (!this.ruleForm.image) {
 				this.$message.error("请上传图片");
 			} else {
-				this.uploading = true
+				this.uploading = true;
 				if (this.ruleForm.id) {
 					EditBannerData(this.ruleForm).then((res) => {
 						if (res.code == 0) {
@@ -312,10 +283,16 @@ export default {
 			GetBannerDetail(this.editid).then((res) => {
 				if (res.code == 0) {
 					this.ruleForm = res.data;
+					this.$refs.headupload.imgurl = res.data.image;
 				} else {
 					this.$message.error(res.msg);
 				}
 			});
+		},
+		addbanner() {
+			this.addbannerShow = true;
+			this.ruleForm = {};
+			this.$refs.headupload.imgurl = "";
 		},
 		handleCurrentChange(val) {
 			this.currentPage = val;
@@ -328,7 +305,7 @@ export default {
 				cancelButtonText: "取消",
 				beforeClose: (action, instance, done) => {
 					if (action === "confirm") {
-						if (instance.inputValue == "") {
+						if (!instance.inputValue) {
 							this.$message.error("请输入驳回原因");
 						} else {
 							instance.confirmButtonLoading = true;
@@ -340,6 +317,7 @@ export default {
 									if (res.code == 0) {
 										this.$message.success("操作成功");
 										done();
+										this.getBannerList();
 									} else {
 										this.$message.error(res.msg);
 									}
@@ -356,9 +334,7 @@ export default {
 					}
 				},
 			})
-				.then(({ value }) => {
-					this.getBannerList();
-				})
+				.then(({ value }) => {})
 				.catch(() => {});
 		},
 		// 删除
@@ -439,9 +415,7 @@ export default {
 /deep/ .avatar-uploader {
 	width: 380px;
 }
-/deep/ .avatar-uploader .el-upload {
-	
-}
+
 /deep/ .avatar {
 	width: 380px !important;
 }

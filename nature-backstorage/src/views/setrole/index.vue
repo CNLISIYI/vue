@@ -11,14 +11,7 @@
 						<el-breadcrumb-item>角色管理</el-breadcrumb-item>
 					</el-breadcrumb>
 					<div class="table-operate">
-						<el-button
-							type="primary"
-							@click="
-								addShow = true;
-								ruleForm = {};
-							"
-							>新增角色</el-button
-						>
+						<el-button type="primary" @click="addrole('')">新增角色</el-button>
 					</div>
 					<el-table
 						:data="tableData"
@@ -76,34 +69,6 @@
 						:hide-on-single-page="true"
 					>
 					</el-pagination>
-					<el-drawer
-						:title="editid ? '编辑角色' : '新增角色'"
-						:visible.sync="addShow"
-						size="35%"
-					>
-						<el-form
-							:model="ruleForm"
-							ref="form"
-							label-width="100px"
-							class="demo-ruleForm"
-						>
-							<el-form-item label="角色名称" required>
-								<el-input
-									v-model="ruleForm.roleName"
-									placeholder="请输入角色名称"
-								></el-input>
-							</el-form-item>
-						</el-form>
-						<div class="sub-btn">
-							<el-button
-								type="primary"
-								@click="addSubmit"
-								v-loading="uploading"
-								element-loading-spinner="el-icon-loading"
-								>确定保存</el-button
-							>
-						</div>
-					</el-drawer>
 					<el-dialog title="删除" :visible.sync="deleteshow">
 						<p>
 							该角色下有人员关联，请先将管理人员转移至其他角色中，才可进行删除
@@ -143,47 +108,19 @@ export default {
 			loading: false, //loading
 			currentPage: 1, //分页数据
 			total: 0,
-			tableData: [
-				{
-					roleId: -1, //角色id
-					roleName: "admin", //角色名称
-					status: 0,
-					createTime: "2021-11-09 10:54:54", //创建时间
-					remark: "交易系统用户角色【预置】",
-					flag: true, //角色是否有关联:true - 有关联 ,false -无关联
-				},
-				{
-					roleId: 31, //角色id
-					roleName: "admin1111", //角色名称
-					createTime: "2021-11-08 13:20:50", //创建时间
-					flag: true, //角色是否有关联:true - 有关联 ,false -无关联
-				},
-				{
-					roleId: 32, //角色id
-					roleName: "管理员2", //角色名称
-					createTime: "2021-11-08 17:08:34", //创建时间
-					flag: false, //角色是否有关联:true - 有关联 ,false -无关联
-				},
-				{
-					roleId: 33, //角色id
-					roleName: "管理员3", //角色名称
-					createTime: "2021-11-08 17:08:47", //创建时间
-					flag: false, //角色是否有关联:true - 有关联 ,false -无关联
-				},
-			],
+			tableData: [],
 			editid: "",
-			addShow: false,
 			ruleForm: {},
 			uploading: false,
 			deleteshow: false,
 			deleteId: "",
 			roleId: "",
-			form:{}
+			form: {},
 		};
 	},
 	created() {},
 	computed: {
-		...mapState(["userData"]),
+		...mapState(["allRoles"]),
 	},
 	watch: {},
 	mounted() {
@@ -216,14 +153,14 @@ export default {
 		},
 		// 无关联删除
 		deleteRow(row) {
+			this.deleteId = row.roleId;
 			if (row.flag) {
-				this.deleteId = row.id;
 				this.deleteshow = true;
 			} else {
 				this.$confirm("确定删除此角色么？", "删除", {
 					beforeClose: (action, instance, done) => {
 						if (action === "confirm") {
-							this.deleteFunc(row.id, -1, false);
+							this.deleteFunc(row.roleId, -1, false);
 							done();
 						}
 					},
@@ -258,28 +195,53 @@ export default {
 		// 编辑
 		openDetail(row) {
 			this.editid = row.roleId;
-			this.ruleForm.roleName = row.roleName;
-			this.addShow = true;
+			this.addrole(row.roleName);
 		},
-		// 新增保存
-		addSubmit() {
-			if (!this.ruleForm.roleName) {
-				this.$message.error("请输入角色名称");
-			} else {
-				this.uploading = true;
-				EditRoleData(this.ruleForm.roleName, this.$state.allIds).then((res) => {
-					if (res.code == 0) {
-						this.uploading = false;
-						this.$message.success("保存成功");
-						this.ruleForm = {};
-						this.addShow = false;
-						this.getList();
+		// 打开新增
+		addrole(name) {
+			this.$prompt("请输入角色名称", name ? "编辑" : "新增", {
+				confirmButtonText: "确定",
+				cancelButtonText: "取消",
+				inputValue: name ? name : "",
+				beforeClose: (action, instance, done) => {
+					if (action === "confirm") {
+						if (!instance.inputValue) {
+							this.$message.error("请输入角色名称");
+						} else if (instance.inputValue.length > 30) {
+							this.$message.error(
+								`最多输入30个字；当前${instance.inputValue.length}个字`
+							);
+						} else {
+							instance.confirmButtonLoading = true;
+							instance.confirmButtonText = "";
+							EditRoleData(this.editid, instance.inputValue, this.$state.allIds)
+								.then((res) => {
+									instance.confirmButtonLoading = false;
+									instance.confirmButtonText = "确定";
+									if (res.code == 0) {
+										this.$message.success("保存成功");
+										this.getList();
+										done();
+									} else {
+										this.$message.error(res.msg);
+									}
+								})
+								.catch((err) => {
+									instance.confirmButtonLoading = false;
+									instance.confirmButtonText = "确定";
+								});
+						}
 					} else {
-						this.uploading = false;
-						this.$message.error(res.msg);
+						instance.confirmButtonLoading = false;
+						instance.confirmButtonText = "确定";
+						done();
 					}
-				});
-			}
+				},
+			})
+				.then(({ value }) => {
+					this.getBannerList();
+				})
+				.catch(() => {});
 		},
 	},
 };
