@@ -1,8 +1,8 @@
 import axios from 'axios'
 import cookies from 'vue-cookies'
 
-const authorization = 'Bearer 2005755a-cdfc-4128-89c0-fcd4b430cf69'
-// const authorization = 'Bearer '+cookies.get('ctrl_shop_to')
+// const authorization = 'Bearer 2005755a-cdfc-4128-89c0-fcd4b430cf69'
+const authorization = 'Bearer ' + cookies.get('authorization');
 
 //创建axios的一个实例
 var instance = axios.create({
@@ -10,7 +10,7 @@ var instance = axios.create({
   baseURL: '/admin-center/',
   headers: {
     'Accept': '*/*',
-    authorization: authorization,
+    'authorization': cookies.get('authorization') ? authorization : '',
     'Content-Type': 'application/json',
   }
 })
@@ -45,17 +45,37 @@ instance.interceptors.response.use(function (response) {
 export default function (method, url, data = null) {
   method = method.toLowerCase();
   if (method == 'post') {
-    return instance.post(url, data)
+    let headers = {
+      'authorization': cookies.get('authorization') ? 'Bearer ' + cookies.get('authorization') : '',
+      'Accept': '*/*',
+      'Content-Type': 'application/json',
+    }
+    return instance.post(url, data, {
+      headers: headers
+    })
   } else if (method == 'get') {
     return instance.get(url, {
-      params: data
+      params: data,
+      headers: {
+        'authorization': cookies.get('authorization') ? 'Bearer ' + cookies.get('authorization') : '',
+        'Content-Type': 'application/json',
+      }
     })
   } else if (method == 'delete') {
     return instance.delete(url, {
-      params: data
+      params: data,
+      headers: {
+        'authorization': cookies.get('authorization') ? 'Bearer ' + cookies.get('authorization') : '',
+        'Content-Type': 'application/json',
+      }
     })
   } else if (method == 'put') {
-    return instance.put(url, data)
+    return instance.put(url, data, {
+      headers: {
+        'authorization': cookies.get('authorization') ? 'Bearer ' + cookies.get('authorization') : '',
+        'Content-Type': 'application/json',
+      }
+    })
   } else {
     console.error('未知的method' + method)
     return false

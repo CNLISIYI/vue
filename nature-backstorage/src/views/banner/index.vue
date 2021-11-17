@@ -34,29 +34,40 @@
 								<span>{{ scope.row.title }}</span>
 							</template>
 						</el-table-column>
-						<el-table-column :resizable="false" label="banner图" align="center">
+						<el-table-column
+							:resizable="false"
+							label="banner图"
+							align="center"
+						>
 							<template slot-scope="scope">
 								<div class="img-box" @click="$tools.openUrl(scope.row.image)">
 									<img :src="scope.row.image" />
 								</div>
 							</template>
 						</el-table-column>
-						<el-table-column
-							:resizable="false"
-							label="跳转链接"
-							align="center"
-							width="200px"
-						>
+						<el-table-column :resizable="false" label="跳转链接" align="center">
 							<template slot-scope="scope">
-								<span>{{ scope.row.url }}</span>
+								<a href="javascript:;" @click="$tools.openUrl(scope.row.url)">{{
+									scope.row.url
+								}}</a>
 							</template>
 						</el-table-column>
-						<el-table-column :resizable="false" label="显示顺序" align="center">
+						<el-table-column
+							:resizable="false"
+							label="显示顺序"
+							align="center"
+							width="90px"
+						>
 							<template slot-scope="scope">
 								<span>{{ scope.row.orders }}</span>
 							</template>
 						</el-table-column>
-						<el-table-column :resizable="false" label="状态" align="center">
+						<el-table-column
+							:resizable="false"
+							label="状态"
+							align="center"
+							width="80px"
+						>
 							<template slot-scope="scope">
 								<span v-if="scope.row.status == 1" class="green">已通过</span>
 								<span v-else-if="scope.row.status == 2" class="red"
@@ -407,6 +418,11 @@ export default {
 			height: 100%;
 		}
 	}
+	a {
+		color: #606266;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+	}
 	span {
 		white-space: nowrap;
 		text-overflow: ellipsis;
@@ -421,5 +437,15 @@ export default {
 }
 /deep/ .el-input {
 	width: 60%;
+}
+.el-table tr {
+	.edit-btn {
+		color: #fff !important;
+		text-decoration: none !important;
+	}
+}
+.el-table tr .cell a:hover {
+	text-decoration: underline;
+	color: #1a8cff;
 }
 </style>

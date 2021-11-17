@@ -42,6 +42,7 @@
 						<el-button type="primary" @click="addInfos">录入信息</el-button>
 						<div class="el-button el-button--primary">
 							<el-upload
+								action=""
 								:on-change="handleChange"
 								:http-request="uploadFile"
 								accept=".xlsx, .xls"
@@ -148,15 +149,38 @@
 							class="demo-ruleForm"
 						>
 							<el-form-item label="所属交易所" required>
-								<el-input
-									v-model="ruleForm.exchangeName"
-									placeholder="请输入所属交易所"
-								></el-input>
+								<el-select
+									v-model="ruleForm.exchangeCode"
+									placeholder="请选择所属交易所"
+									@change="handleselect"
+								>
+									<el-option
+										v-for="item in selectopt"
+										:key="item.value"
+										:label="item.label"
+										:value="item.value"
+									>
+									</el-option>
+								</el-select>
 							</el-form-item>
 							<el-form-item label="开盘价" required>
 								<el-input
 									v-model="ruleForm.openingPrice"
 									placeholder="请输入开盘价"
+									type="number"
+								></el-input>
+							</el-form-item>
+							<el-form-item label="收盘价" required>
+								<el-input
+									v-model="ruleForm.closingPrice"
+									placeholder="请输入收盘价"
+									type="number"
+								></el-input>
+							</el-form-item>
+							<el-form-item label="成交量" required>
+								<el-input
+									v-model="ruleForm.tradedQuantity"
+									placeholder="请输入成交量"
 									type="number"
 								></el-input>
 							</el-form-item>
@@ -167,10 +191,17 @@
 									type="number"
 								></el-input>
 							</el-form-item>
-							<el-form-item label="成交量" required>
+							<el-form-item label="最高价" required>
 								<el-input
-									v-model="ruleForm.tradedQuantity"
-									placeholder="请输入成交量"
+									v-model="ruleForm.highestPrice"
+									placeholder="请输入最高价"
+									type="number"
+								></el-input>
+							</el-form-item>
+							<el-form-item label="最低价" required>
+								<el-input
+									v-model="ruleForm.lowestPrice"
+									placeholder="请输入最低价"
 									type="number"
 								></el-input>
 							</el-form-item>
@@ -217,48 +248,9 @@ export default {
 			loading: false, //loading
 			currentPage: 1, //分页数据
 			total: 0,
-			tableData: [
-				{
-					id: 5099, //行情信息录入id
-					exchangeCode: "GD", //交易所code
-					exchangeName: "广东交易所", //交易所名称
-					openingPrice: 36.06, //开盘价
-					closingPrice: 36.41, //收盘价
-					tradedQuantity: 55857, //成交量
-					tradedPrice: 2032470, //成交总金额
-					highestPrice: 36.5, //最高价
-					lowestPrice: 33, //最低价
-					infoTime: "2021-03-23", //时间
-					createTime: "2021-11-11", //录入时间
-				},
-				{
-					id: 5100, //行情信息录入id
-					exchangeCode: "GD", //交易所code
-					exchangeName: "广东交易所", //交易所名称
-					openingPrice: 35.53, //开盘价
-					closingPrice: 36.06, //收盘价
-					tradedQuantity: 4977, //成交量
-					tradedPrice: 177908, //成交总金额
-					highestPrice: 36.15, //最高价
-					lowestPrice: 32.55, //最低价
-					infoTime: "2021-03-22", //时间
-					createTime: "2021-11-11", //录入时间
-				},
-			],
+			tableData: [],
 			addinfoShow: false, //新增弹窗
-			ruleForm: {
-				id: 18664,
-				exchangeCode: "OM", //交易所code
-				exchangeName: "11111111", //交易所名称
-				openingPrice: 11.11, //开盘价
-				closingPrice: 11.11, //收盘价
-				tradedQuantity: 55857, //成交量
-				tradedPrice: 2032470, //成交总金额
-				highestPrice: 36.5, //最高价
-				lowestPrice: 33, //最低价
-				infoTime: "2021-11-12", //时间
-				createTime: "2021-11-11", //录入时间
-			},
+			ruleForm: {},
 			editid: 0,
 			uploading: false,
 			choosedate: "",
@@ -293,8 +285,8 @@ export default {
 				],
 			},
 			selectopt: [
-				{ value: 0, label: "欧盟交易所" },
-				{ value: 1, label: "已通过" },
+				{ value: 1, label: "欧盟交易所" },
+				{ value: 2, label: "已通过" },
 			],
 		};
 	},
@@ -308,6 +300,13 @@ export default {
 	},
 
 	methods: {
+		handleselect(value) {
+			this.selectopt.map((item)=>{
+				if(value == item.value){
+					this.ruleForm.exchangeName = item.label
+				}
+			})
+		},
 		// 获取列表
 		getlist() {
 			this.loading = true;
@@ -333,14 +332,17 @@ export default {
 		},
 		// 新增保存
 		addSubmit() {
-			if (!this.ruleForm.exchangeName) {
-				this.$message.error("请输入交易所名称");
+			if (!this.ruleForm.exchangeCode) {
+				this.$message.error("请选择交易所");
 			} else if (!this.ruleForm.infoTime) {
 				this.$message.error("请选择日期");
 			} else if (
 				!this.ruleForm.openingPrice ||
 				!this.ruleForm.tradedPrice ||
-				!this.ruleForm.tradedQuantity
+				!this.ruleForm.closingPrice ||
+				!this.ruleForm.tradedQuantity ||
+				!this.ruleForm.highestPrice ||
+				!this.ruleForm.lowestPrice
 			) {
 				this.$message.error("请输入数字格式的价格和成交量");
 			} else {
@@ -406,7 +408,7 @@ export default {
 			let form = new FormData();
 			form.append("file", param.file);
 			form.append("updateSupport", true);
-			console.log(param)
+			console.log(param);
 			// importData(form).then((res) => {
 			// 	console.log(res);
 			// });

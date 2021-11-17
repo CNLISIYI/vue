@@ -161,20 +161,17 @@ export default {
 			if (!this.form.username || !this.form.password || !this.form.code) {
 				this.$message.error("请输入登录信息");
 			} else {
-				localStorage.setItem("user_info", "sdasdasdasd");
-				this.$router.push({
-					name: "home",
+				userLogin(this.form, this.imgkey).then((res) => {
+					if (res.code == 0) {
+						this.$cookies.set("authorization", res.data.access_token);
+						this.$cookies.set("username", this.form.username);
+						this.$router.push({
+							name: "home",
+						});
+					} else {
+						this.$message.error(res.msg);
+					}
 				});
-				// userLogin(this.form, this.imgkey).then((res) => {
-				// 	if (res.code == 0) {
-				// 		localStorage.setItem("user_info", res.data);
-				// 		this.$router.push({
-				// 			name: "home",
-				// 		});
-				// 	} else {
-				// 		this.$message.error(res.msg);
-				// 	}
-				// });
 			}
 		},
 		sendCode() {

@@ -7,8 +7,6 @@ export const userLogin = (form, codekey) => req('post', '/login', {
   password: form.password,
   imgCodeKey: codekey,
   imageCode: form.code,
-  clientId,
-  clientSecret
 })
 // 设置新密码
 export const setNewPassword = (oldPwd, newPwd) => req('put', '/changePwd', {
@@ -16,8 +14,7 @@ export const setNewPassword = (oldPwd, newPwd) => req('put', '/changePwd', {
   newPwd
 })
 // 注销
-export const userLogout = (userName, clientId) => req('get', '/logout', {
-  userName,
+export const userLogout = (clientId) => req('get', '/logout', {
   clientId
 })
 //获取验证码
@@ -187,7 +184,7 @@ export const GetAgreeManaData = (id) => req('get', `trade/transferOrder/${id}`, 
 //编辑成交项目详情
 export const EditAgreeData = (form) => req('put', 'trade/transferOrder', {
   id: form.id,
-  status: 0,
+  status: 2,
   totalAmount: form.totalAmount,
   serviceFee: form.serviceFee,
 })

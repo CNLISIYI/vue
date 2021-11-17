@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import cookies from 'vue-cookies'
 
 Vue.use(Router)
 
@@ -109,7 +110,7 @@ const router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
-  const userInfo = localStorage.getItem('user_info')
+  const userInfo = cookies.get('authorization')
   if (userInfo) {
     if (to.path == '/login') {
       next('/');

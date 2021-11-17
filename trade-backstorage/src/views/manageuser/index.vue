@@ -101,7 +101,7 @@
 						</el-table-column>
 						<el-table-column :resizable="false" label="所在地区" align="center">
 							<template slot-scope="scope">
-								<span>{{ scope.row.address }}</span>
+								<span>{{ scope.row.cityStr }}</span>
 							</template>
 						</el-table-column>
 						<el-table-column
@@ -203,10 +203,6 @@
 								<span>{{ deDatas.userName }}</span>
 							</div>
 							<div class="card-item">
-								<span>登录密码：</span>
-								<span>{{  }}</span>
-							</div>
-							<div class="card-item">
 								<span>支付密码：</span>
 								<span>{{ deDatas.payPassword }}</span>
 							</div>
@@ -270,8 +266,8 @@
 							<div class="card-item w50">
 								<span>所在地区：</span>
 								<span
-									>{{ deDatas.province }} {{ deDatas.city }}
-									{{ deDatas.district }}</span
+									>{{ deDatas.provinceStr }} {{ deDatas.cityStr }}
+									{{ deDatas.districtStr }}</span
 								>
 							</div>
 							<div class="card-item w50">

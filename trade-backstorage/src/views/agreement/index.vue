@@ -126,17 +126,17 @@
 							width="110px"
 						>
 							<template slot-scope="scope">
-								<span v-if="scope.row.status == 0">待审核</span>
-								<span v-else-if="scope.row.status == 1" class="green"
+								<span v-if="scope.row.status == 2">待审核</span>
+								<span v-else-if="scope.row.status == 3" class="green"
 									>已通过</span
 								>
-								<span v-else-if="scope.row.status == 2" class="red"
+								<span v-else-if="scope.row.status == 4" class="red"
 									>已驳回</span
 								>
-								<span v-else-if="scope.row.status == 3" class="orange"
+								<span v-else-if="scope.row.status == 0" class="orange"
 									>接收方待确认</span
 								>
-								<span v-else-if="scope.row.status == 4" class="red"
+								<span v-else-if="scope.row.status == 1" class="red"
 									>接收方已拒绝</span
 								>
 							</template>
@@ -158,28 +158,28 @@
 									size="mini"
 									type="warning"
 									@click.native.prevent="openedit(scope.row)"
-									v-if="scope.row.status == 0"
+									v-if="scope.row.status == 2"
 									>编辑</el-button
 								>
 								<el-button
 									size="mini"
 									type="success"
 									@click.native.prevent="passRow(scope.row)"
-									v-if="scope.row.status == 0"
+									v-if="scope.row.status == 2"
 									>通过</el-button
 								>
 								<el-button
 									size="mini"
 									type="info"
 									@click.native.prevent="openReject(scope.row)"
-									v-if="scope.row.status == 0"
+									v-if="scope.row.status == 2"
 									>驳回</el-button
 								>
 								<el-button
 									size="mini"
 									type="primary"
 									@click="openReason(scope.row)"
-									v-if="scope.row.status == 2"
+									v-if="scope.row.status == 4"
 									>驳回原因</el-button
 								>
 							</template>
@@ -355,17 +355,17 @@
 							<div>
 								<div class="card-item">
 									<span>状态：</span>
-									<span v-if="deDatas.status == 0">待审核</span>
-									<span v-else-if="deDatas.status == 1" class="green"
+									<span v-if="deDatas.status == 2">待审核</span>
+									<span v-else-if="deDatas.status == 3" class="green"
 										>已通过</span
 									>
-									<span v-else-if="deDatas.status == 2" class="red"
+									<span v-else-if="deDatas.status == 4" class="red"
 										>已驳回</span
 									>
-									<span v-else-if="deDatas.status == 3" class="orange"
+									<span v-else-if="deDatas.status == 0" class="orange"
 										>接收方待确认</span
 									>
-									<span v-else-if="deDatas.status == 4" class="red"
+									<span v-else-if="deDatas.status == 1" class="red"
 										>接收方已拒绝</span
 									>
 								</div>
@@ -455,11 +455,11 @@ export default {
 				],
 			},
 			selectopt: [
-				{ value: 0, label: "待审核" },
-				{ value: 1, label: "已通过" },
-				{ value: 2, label: "已驳回" },
-				{ value: 3, label: "接收方待确认" },
-				{ value: 4, label: "接收方已拒绝" },
+				{ value: 0, label: "接收方待确认" },
+				{ value: 1, label: "接收方已拒绝" },
+				{ value: 2, label: "待审核" },
+				{ value: 3, label: "已通过" },
+				{ value: 4, label: "已驳回" },
 			],
 			searchin: "",
 			searchout: "",
@@ -606,9 +606,7 @@ export default {
 				if (res.code == 0) {
 					this.$message.success("操作成功");
 					this.getlist();
-					setTimeout(() => {
-						done();
-					}, 400);
+					this.editshow = false;
 				} else {
 					this.$message.error(res.msg);
 				}

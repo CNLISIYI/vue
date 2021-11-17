@@ -33,7 +33,12 @@
 						>
 					</div>
 					<div class="table-operate">
-						<el-button type="primary" @click="addShow = true"
+						<el-button
+							type="primary"
+							@click="
+								addShow = true;
+								ruleForm = {};
+							"
 							>新增人员</el-button
 						>
 					</div>
@@ -69,9 +74,14 @@
 								<span>{{ scope.row.userName }}</span>
 							</template>
 						</el-table-column>
-						<el-table-column :resizable="false" label="登录密码" align="center">
-							<template slot-scope="scope">
-								<span>{{ scope.row.password }}</span>
+						<el-table-column
+							:resizable="false"
+							label="登录密码"
+							align="center"
+							width="90px"
+						>
+							<template>
+								<span>******</span>
 							</template>
 						</el-table-column>
 						<el-table-column :resizable="false" label="所属部门" align="center">
@@ -211,7 +221,13 @@
 </template>
 
 <script>
-import { GetUserList, DelUser, GetUsers, PostUserData } from "../../api/apis";
+import {
+	GetUserList,
+	DelUser,
+	GetUsers,
+	PostUserData,
+	EditUserData,
+} from "../../api/apis";
 import { mapState, mapActions } from "vuex";
 export default {
 	name: "AppSetUser",
@@ -221,8 +237,7 @@ export default {
 			loading: false, //loading
 			currentPage: 1, //分页数据
 			total: 0,
-			tableData: [
-			],
+			tableData: [],
 			searchname: "",
 			searchtell: "",
 			editid: "",
@@ -304,25 +319,40 @@ export default {
 				this.$message.error("请输入正确手机号");
 			} else if (!this.ruleForm.nickName || !this.ruleForm.deptName) {
 				this.$message.error("请输入姓名和部门");
-			} else if (!this.ruleForm.userName || !this.ruleForm.password) {
+			} else if (!this.ruleForm.userName) {
 				this.$message.error("请输入登录名和密码");
 			} else if (!this.ruleForm.roleId) {
 				this.$message.error("请选择对应角色");
 			} else {
 				this.uploading = true;
 				this.ruleForm.id = this.ruleForm.id ? this.ruleForm.id : "";
-				PostUserData(this.ruleForm).then((res) => {
-					if (res.code == 0) {
-						this.uploading = false;
-						this.$message.success("保存成功");
-						this.ruleForm = {};
-						this.addShow = false;
-						this.getuserList();
-					} else {
-						this.uploading = false;
-						this.$message.error(res.msg);
-					}
-				});
+				if (this.ruleForm.id) {
+					EditUserData(this.ruleForm).then((res) => {
+						if (res.code == 0) {
+							this.uploading = false;
+							this.$message.success("保存成功");
+							this.ruleForm = {};
+							this.addShow = false;
+							this.getuserList();
+						} else {
+							this.uploading = false;
+							this.$message.error(res.msg);
+						}
+					});
+				} else {
+					PostUserData(this.ruleForm).then((res) => {
+						if (res.code == 0) {
+							this.uploading = false;
+							this.$message.success("保存成功");
+							this.ruleForm = {};
+							this.addShow = false;
+							this.getuserList();
+						} else {
+							this.uploading = false;
+							this.$message.error(res.msg);
+						}
+					});
+				}
 			}
 		},
 	},

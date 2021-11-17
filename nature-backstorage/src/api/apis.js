@@ -7,8 +7,6 @@ export const userLogin = (form, codekey) => req('post', '/login', {
   password: form.password,
   imgCodeKey: codekey,
   imageCode: form.code,
-  clientId,
-  clientSecret
 })
 // 设置新密码
 export const setNewPassword = (oldPwd, newPwd) => req('put', '/changePwd', {
@@ -16,8 +14,7 @@ export const setNewPassword = (oldPwd, newPwd) => req('put', '/changePwd', {
   newPwd
 })
 // 注销
-export const userLogout = (userName, clientId) => req('get', '/logout', {
-  userName,
+export const userLogout = (clientId) => req('get', '/logout', {
   clientId
 })
 
@@ -194,8 +191,21 @@ export const PostUserData = (form) => req('post', 'system/user', {
   userName: form.userName,
   password: form.password,
   deptName: form.deptName,
-  roleId: form.roleId
+  roleId: form.roleId,
+  userType: '1',
+  tenant_id: -1
 })
+
+//编辑用户
+export const EditUserData = (form) => req('put', `system/user/${form.id}`, {
+  nickName: form.nickName,
+  userName: form.userName,
+  phone: form.phone,
+  password: form.password,
+  deptName: form.deptName,
+  roleId: form.roleId,
+})
+
 
 // 获取角色列表
 export const GetRoleList = (pageNumber) => req('post', 'system/role/list', {

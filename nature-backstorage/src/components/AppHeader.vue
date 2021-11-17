@@ -9,7 +9,7 @@
 		</router-link>
 		<el-menu class="el-menu-demo" mode="horizontal" active-text-color="#fff">
 			<el-submenu index="1">
-				<template slot="title">zhaozhihan</template>
+				<template slot="title">{{$cookies.get("username")}}</template>
 				<el-menu-item index="1-1" @click="$router.push({ name: 'changepw' })"
 					>修改密码</el-menu-item
 				>
@@ -29,7 +29,7 @@ export default {
 	},
 	props: {},
 	mounted() {
-		this.getAllTypes()
+		this.getAllTypes();
 	},
 	computed: {
 		...mapState(["typeopt"]),
@@ -37,10 +37,14 @@ export default {
 	methods: {
 		...mapActions(["getAllTypes"]),
 		logout() {
-			userLogout(userName, clientId).then((res) => {
+			userLogout(this.$cookies.get("username")).then((res) => {
 				if (res.code == 0) {
 					this.$message.success("退出成功");
-					localStorage.setItem("user_info", "");
+					this.$cookies.set("authorization", "");
+					this.$cookies.set("username", "");
+					this.$router.push({
+						name: "login",
+					});
 				} else {
 					this.$message.error(res.msg);
 				}

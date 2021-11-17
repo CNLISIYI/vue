@@ -254,13 +254,13 @@
 							</div>
 							<div class="card-item">
 								<span>审定报告：</span>
-								<span>{{ deDatas.accreditedReport }}</span>
+								<span>项目审定报告</span>
 								<el-link
 									target="_blank"
 									:href="deDatas.accreditedReport"
 									:underline="false"
 								>
-									下载没有
+									下载
 								</el-link>
 							</div>
 							<div class="card-item">

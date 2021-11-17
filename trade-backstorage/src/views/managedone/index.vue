@@ -327,9 +327,7 @@ export default {
 				if (res.code == 0) {
 					this.$message.success("操作成功");
 					this.getlist();
-					setTimeout(() => {
-						done();
-					}, 400);
+					this.editshow = false;
 				} else {
 					this.$message.error(res.msg);
 				}
