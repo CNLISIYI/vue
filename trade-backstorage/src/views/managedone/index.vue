@@ -73,10 +73,16 @@
 						key="table"
 					>
 						<el-table-column
+							label="序号"
 							type="index"
 							width="50"
 							align="center"
-						></el-table-column>
+							fixed
+						>
+							<template slot-scope="scope">
+								{{ (currentPage - 1) * 20 + scope.$index + 1 }}
+							</template>
+						</el-table-column>
 						<el-table-column :resizable="false" label="项目名称" align="center">
 							<template slot-scope="scope">
 								<span>{{ scope.row.projectName }}</span>

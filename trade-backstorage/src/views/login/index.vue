@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<Appheader></Appheader>
-		<div class="logbox" v-if="loginshow">
+		<div class="logbox clearfix" v-if="loginshow">
 			<h4>用户登录</h4>
 			<el-form
 				:model="form"
@@ -81,7 +81,7 @@
 					</el-button>
 				</el-form-item>
 				<div class="sub-btn">
-					<el-button type="primary" @click="setNext">下一步</el-button>
+					<el-button type="primary" @click="setNext" v-loading="loading">下一步</el-button>
 				</div>
 			</el-form>
 		</div>
@@ -119,9 +119,15 @@
 </template>
 
 <script>
-import { GetImgcode, userLogin } from "../../api/apis";
+import {
+	GetImgcode,
+	userLogin,
+	setPasswordFirst,
+	ResetPassword,
+} from "../../api/apis";
 export default {
 	name: "AppLogin",
+	inject: ["reload"],
 	data() {
 		return {
 			form: {}, //登录
@@ -161,9 +167,11 @@ export default {
 			if (!this.form.username || !this.form.password || !this.form.code) {
 				this.$message.error("请输入登录信息");
 			} else {
+				this.loading = true;
 				userLogin(this.form, this.imgkey).then((res) => {
+					this.loading = false;
 					if (res.code == 0) {
-						this.$cookies.set("authorization", res.data.access_token);
+						this.$cookies.set("authorization", `${res.data.access_token}`);
 						this.$cookies.set("username", this.form.username);
 						this.$router.push({
 							name: "home",
@@ -194,24 +202,38 @@ export default {
 			) {
 				this.$message.error("请输入相关信息");
 			} else {
-				this.forgetshow = false;
-				this.setshow = true;
+				this.loading = true;
+				setPasswordFirst(
+					this.forgetform.username,
+					this.forgetform.mobile,
+					"123456"
+				).then((res) => {
+					this.loading = false;
+					if (res.code == 0) {
+						this.$state.user_id = res.data.id;
+						this.$state.userInfo = res.data;
+						this.forgetshow = false;
+						this.setshow = true;
+					} else {
+						this.$message.error(res.msg);
+					}
+				});
 			}
 		},
 		setNewPw() {
 			if (this.setform.password != this.setform.password2) {
 				this.$message.error("两次密码输入不一致");
 			} else {
-				userLogin(this.form, this.imgkey).then((res) => {
-					if (res.code == 0) {
-						localStorage.setItem("user_info", res.data);
-						this.$router.push({
-							name: "home",
-						});
-					} else {
-						this.$message.error(res.msg);
+				ResetPassword(this.$state.user_id, this.setform.password).then(
+					(res) => {
+						if (res.code == 0) {
+							this.$message.success("修改成功！请重新登录");
+							this.reload();
+						} else {
+							this.$message.error(res.msg);
+						}
 					}
-				});
+				);
 			}
 		},
 	},

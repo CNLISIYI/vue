@@ -9,7 +9,9 @@
 						<el-breadcrumb-item :to="{ path: './' }">首页</el-breadcrumb-item>
 						<el-breadcrumb-item>内容管理</el-breadcrumb-item>
 					</el-breadcrumb>
-					<div class="tips"><p>点击标题可查看内容详情</p></div>
+					<div class="tips" v-if="$tools.isMenus(52)">
+						<p>点击标题可查看内容详情</p>
+					</div>
 					<div class="table-search">
 						<el-input
 							placeholder="请输入标题"
@@ -78,9 +80,14 @@
 							class-name="overhide"
 						>
 							<template slot-scope="scope">
-								<a href="javascript:;" @click="openDetail(scope.row)">
+								<a
+									href="javascript:;"
+									@click="openDetail(scope.row)"
+									v-if="$tools.isMenus(52)"
+								>
 									{{ scope.row.title }}
 								</a>
+								<span v-else>{{ scope.row.title }}</span>
 							</template>
 						</el-table-column>
 						<el-table-column :resizable="false" label="banner图" align="center">
@@ -105,10 +112,15 @@
 								<span>{{ scope.row.categoryId }}</span>
 							</template>
 						</el-table-column>
-						<el-table-column :resizable="false" label="状态" align="center" width="70px">
+						<el-table-column
+							:resizable="false"
+							label="状态"
+							align="center"
+							width="70px"
+						>
 							<template slot-scope="scope">
 								<span v-if="scope.row.status == 1" class="green">已通过</span>
-								<span v-else-if="scope.row.status == 2" class="red"
+								<span v-else-if="scope.row.status == -1" class="red"
 									>已驳回</span
 								>
 								<span v-else-if="scope.row.status == 0">待审批</span>
@@ -119,7 +131,12 @@
 								<span>{{ scope.row.readnumber }}</span>
 							</template>
 						</el-table-column>
-						<el-table-column :resizable="false" label="发布时间" align="center" width="100px">
+						<el-table-column
+							:resizable="false"
+							label="发布时间"
+							align="center"
+							width="100px"
+						>
 							<template slot-scope="scope">
 								<span>{{ scope.row.createTime }}</span>
 							</template>
@@ -133,7 +150,7 @@
 						>
 							<template slot-scope="scope">
 								<router-link
-									v-if="scope.row.status != 1"
+									v-if="scope.row.status != 1 && $tools.isMenus(47)"
 									class="edit-btn el-button el-button--warning el-button--mini"
 									:to="{
 										name: 'newspost',
@@ -147,6 +164,7 @@
 									@click.native.prevent="deleteRow(scope.row)"
 									type="danger"
 									size="mini"
+									v-if="$tools.isMenus(48)"
 								>
 									删除
 								</el-button>
@@ -154,21 +172,21 @@
 									size="mini"
 									type="success"
 									@click.native.prevent="passRow(scope.row.id)"
-									v-if="scope.row.status == 0"
+									v-if="scope.row.status == 0 && $tools.isMenus(49)"
 									>通过</el-button
 								>
 								<el-button
 									size="mini"
 									type="info"
 									@click.native.prevent="openReject(scope.row.id)"
-									v-if="scope.row.status == 0"
+									v-if="scope.row.status == 0 && $tools.isMenus(50)"
 									>驳回</el-button
 								>
 								<el-button
 									size="mini"
 									type="primary"
 									@click="openReason(scope.row)"
-									v-if="scope.row.status == 2"
+									v-if="scope.row.status == -1 && $tools.isMenus(51)"
 									>驳回原因</el-button
 								>
 							</template>
@@ -201,7 +219,7 @@
 							</div>
 							<div class="card-item w25">
 								<span>所属类型：</span>
-								<span>{{ artData.categoryId }}</span>
+								<span>{{ $tools.changeType(artData.categoryId) }}</span>
 							</div>
 							<div class="card-item w25">
 								<span>发布时间：</span>
@@ -220,7 +238,7 @@
 							</div>
 							<div class="card-item w25">
 								<span>提交人：</span>
-								<span>{{ artData.userId }}</span>
+								<span>{{ artData.creatBy }}</span>
 							</div>
 							<div class="card-item">
 								<span>是否显示在首页推荐位：</span>
@@ -255,7 +273,7 @@
 										>待审批</span
 									>
 								</div>
-								<div class="card-item" v-if="artData.status == -1">
+								<div class="card-item" v-if="artData.status == -1 && $tools.isMenus(51)">
 									<span>驳回原因：</span>
 									<span>{{ artData.reject }}</span>
 								</div>
@@ -264,12 +282,14 @@
 										size="small"
 										type="success"
 										@click.native.prevent="passRow(detailid)"
+										v-if="$tools.isMenus(49)"
 										>通过</el-button
 									>
 									<el-button
 										size="small"
 										type="info"
 										@click.native.prevent="openReject(detailid)"
+										v-if="$tools.isMenus(50)"
 										>驳回</el-button
 									>
 								</div>
@@ -280,7 +300,7 @@
 									</div>
 									<div class="card-item">
 										<span>审批人员：</span>
-										<span>{{ artData.userId }}</span>
+										<span>{{ artData.releaseName }}</span>
 									</div>
 								</div>
 							</div>
@@ -346,7 +366,7 @@ export default {
 			selectopt: [
 				{ value: 0, label: "待审批" },
 				{ value: 1, label: "已通过" },
-				{ value: 2, label: "已驳回" },
+				{ value: -1, label: "已驳回" },
 			],
 			searchwords: "",
 			detailid: "",
@@ -421,7 +441,7 @@ export default {
 									instance.confirmButtonText = "确定";
 									if (res.code == 0) {
 										this.$message.success("操作成功");
-										this.getnewslist()
+										this.getnewslist();
 										done();
 									} else {
 										this.$message.error(res.msg);
@@ -439,8 +459,7 @@ export default {
 					}
 				},
 			})
-				.then(({ value }) => {
-				})
+				.then(({ value }) => {})
 				.catch(() => {});
 		},
 		// 删除
@@ -477,7 +496,7 @@ export default {
 		passRow(id) {
 			this.$confirm("确定审核通过该内容么？")
 				.then(() => {
-					PassArticle(id, 1).then((res) => {
+					PassArticle(id).then((res) => {
 						if (res.code == 0) {
 							this.$message.success("操作成功");
 							this.getnewslist();
@@ -494,7 +513,7 @@ export default {
 		// 驳回原因
 		openReason(row) {
 			this.$alert(
-				`驳回原因：${row.reject}<br/>审批时间：${row.releaseTime}<br/>审批人员：运营部${row.userId}`,
+				`驳回原因：${row.reject}<br/>审批时间：${row.releaseTime}<br/>审批人员：${row.releaseName}`,
 				"驳回",
 				{
 					confirmButtonText: "确定",

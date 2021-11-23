@@ -1,8 +1,12 @@
 
-export const getAllIds = (state, ids) => {
-  state.allIds = ids;
+export const getAllIds = (state, allIds) => {
+  state.allIds = allIds;
 };
 
-export const getAllRole = (state, data) => {
-  state.allRoles = data;
+export const getAllRole = (state, allRoles) => {
+  state.allRoles = allRoles;
+};
+
+export const getMyMenus = (state, myMenus) => {
+  state.myMenus = myMenus;
 };

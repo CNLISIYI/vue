@@ -2,20 +2,45 @@ import req from './http.js'
 import state from '../store/state'
 
 // 登录
-export const userLogin = (form, codekey) => req('post', '/login', {
+export const userLogin = (form, codekey) => req('post', 'login', {
   username: form.username,
   password: form.password,
   imgCodeKey: codekey,
   imageCode: form.code,
 })
 // 设置新密码
-export const setNewPassword = (oldPwd, newPwd) => req('put', '/changePwd', {
+export const setNewPassword = (oldPwd, newPwd) => req('put', 'changePwd', {
   oldPwd,
   newPwd
 })
+// 找回密码
+export const setPasswordFirst = (userName, phone, phoneCode) => req('post', 'retrievePassword', {
+  userName,
+  phone,
+  phoneCode
+})
+// 重置密码
+export const ResetPassword = (id, password) => req('put', 'resetPassword', {
+  id,
+  password
+})
 // 注销
-export const userLogout = (clientId) => req('get', '/logout', {
+export const userLogout = (clientId) => req('get', 'logout', {
   clientId
+})
+// 获取成交额
+export const getFeeChart = (type, startDate, endDate) => req('post', 'trade/homePage/getTurnoverStatistics', {
+  type,
+  startDate,
+  endDate
+})
+// 获取本行
+export const getMineChart = (type) => req('post', `trade/homePage/localExchangeIndustry?type=${type}`, {
+  type
+})
+// 获取其他行
+export const getOutChart = (flag) => req('get', 'trade/homePage/getIndustry', {
+  flag
 })
 //获取验证码
 export const GetImgcode = () => req('get', 'common/captchaImage', {})
@@ -233,6 +258,11 @@ export const EditDoneData = (form) => req('put', 'trade/tradedOrder', {
   serviceFee: form.serviceFee,
 })
 
+// 获取交易所
+export const GetMarket = () => req('get', 'trade/marketInfo/getMarketInfo', {})
+
+// 下载模版
+export const GetexlModel = () => req('post', 'trade/marketInfo/exportTemplate', {})
 
 // 获取用户列表
 export const GetUserList = (pageNumber, name, phone) => req('post', 'system/user/list', {
@@ -268,9 +298,20 @@ export const PostUserData = (form) => req('post', 'system/user', {
   userName: form.userName,
   password: form.password,
   deptName: form.deptName,
-  roleId: form.roleId
+  roleId: form.roleId,
+  userType: '1',
+  tenant_id: -1
 })
 
+//编辑用户
+export const EditUserData = (form) => req('put', `system/user/${form.id}`, {
+  nickName: form.nickName,
+  phone: form.phone,
+  password: form.password,
+  deptName: form.deptName,
+  roleId: form.roleId,
+  id: form.id
+})
 // 获取角色列表
 export const GetRoleList = (pageNumber) => req('post', 'system/role/list', {
   pageNumber,
@@ -278,20 +319,33 @@ export const GetRoleList = (pageNumber) => req('post', 'system/role/list', {
 })
 
 //删除角色
-export const DelRole = (roleId, roleIdTN, flag) => req('delete', 'system/role/removeRelation', {
+export const DelRole = (roleId, roleIdTN, flag) => req('post', 'system/role/removeRelation', {
   roleId,
   roleIdTN,
   flag
 })
+
 //编辑角色
-export const EditRoleData = (roleName, ids) => req('put', 'system/role/saveOrUpdate', {
+export const EditRoleData = (roleName, roleId, ids) => req('post', 'system/role/saveOrUpdate', {
   roleName,
-  ids: ids
+  roleId,
+  ids
 })
 // 获取角色权限
 export const GetAllIds = () => req('post', 'system/menu/list', {
   pageNumber: 1,
   pageSize: -1
+})
+// 获取用户权限
+// export const GetMyMenus = () => req('get', 'system/menu/roleMenuTree', {
+//   userType: 1
+// })
+export const GetMyMenus = () => req('get', 'getInfo', {
+})
+// 获取对应角色权限 
+export const GetRoleMenus = (roleId) => req('get', 'system/menu/checked', {
+  roleId,
+  userType: 1
 })
 // 获取操作日志列表
 export const GetHistory = (pageNumber) => req('post', 'system/operLog/list', {

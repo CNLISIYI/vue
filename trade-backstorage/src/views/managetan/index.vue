@@ -9,7 +9,9 @@
 						<el-breadcrumb-item :to="{ path: './' }">首页</el-breadcrumb-item>
 						<el-breadcrumb-item>碳汇项目管理</el-breadcrumb-item>
 					</el-breadcrumb>
-					<div class="tips"><p>点击项目名称可查看内容详情</p></div>
+					<div class="tips" v-if="$tools.isMenus(13)">
+						<p>点击项目名称可查看内容详情</p>
+					</div>
 					<div class="table-search">
 						<el-input
 							placeholder="请输入企业名称"
@@ -59,11 +61,16 @@
 						key="table"
 					>
 						<el-table-column
+							label="序号"
 							type="index"
 							width="50"
 							align="center"
 							fixed
-						></el-table-column>
+						>
+							<template slot-scope="scope">
+								{{ (currentPage - 1) * 20 + scope.$index + 1 }}
+							</template>
+						</el-table-column>
 						<el-table-column
 							:resizable="false"
 							label="项目名称"
@@ -71,9 +78,14 @@
 							fixed
 						>
 							<template slot-scope="scope">
-								<a href="javascript:;" @click="openDetail(scope.row)">
+								<a
+									href="javascript:;"
+									@click="openDetail(scope.row)"
+									v-if="$tools.isMenus(13)"
+								>
 									{{ scope.row.name }}
 								</a>
+								<span v-else>{{ scope.row.name }}</span>
 							</template>
 						</el-table-column>
 						<el-table-column :resizable="false" label="申报企业" align="center">
@@ -161,21 +173,30 @@
 									size="mini"
 									type="success"
 									@click.native.prevent="passRow(scope.row)"
-									v-if="scope.row.status == 0 || scope.row.status == 3"
+									v-if="
+										$tools.isMenus(14) &&
+										(scope.row.status == 0 || scope.row.status == 3)
+									"
 									>通过</el-button
 								>
 								<el-button
 									size="mini"
 									type="info"
 									@click.native.prevent="openReject(scope.row)"
-									v-if="scope.row.status == 0 || scope.row.status == 3"
+									v-if="
+										$tools.isMenus(15) &&
+										(scope.row.status == 0 || scope.row.status == 3)
+									"
 									>驳回</el-button
 								>
 								<el-button
 									size="mini"
 									type="primary"
 									@click="openReason(scope.row)"
-									v-if="scope.row.status == 2 || scope.row.status == 5"
+									v-if="
+										$tools.isMenus(16) &&
+										(scope.row.status == 2 || scope.row.status == 5)
+									"
 									>驳回原因</el-button
 								>
 							</template>
@@ -269,10 +290,7 @@
 							</div>
 							<div class="card-item w100" v-if="deDatas.otherFile">
 								<span>其他相关文件：</span>
-								<p
-									v-for="(item, index) in deDatas.otherFile"
-									:key="index"
-								>
+								<p v-for="(item, index) in deDatas.otherFile" :key="index">
 									<span>{{ item.name }}</span>
 									<el-link target="_blank" :href="item.url" :underline="false">
 										下载
@@ -310,12 +328,14 @@
 										size="small"
 										type="success"
 										@click.native.prevent="passRow(deDatas)"
+										v-if="$tools.isMenus(14)"
 										>通过</el-button
 									>
 									<el-button
 										size="small"
 										type="info"
 										@click.native.prevent="openReject(deDatas)"
+										v-if="$tools.isMenus(15)"
 										>驳回</el-button
 									>
 								</div>

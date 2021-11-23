@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<Appheader></Appheader>
-		<div class="logbox" v-if="loginshow">
+		<div class="logbox clearfix" v-if="loginshow">
 			<h4>用户登录</h4>
 			<el-form
 				:model="form"

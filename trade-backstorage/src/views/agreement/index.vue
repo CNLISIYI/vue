@@ -9,7 +9,9 @@
 						<el-breadcrumb-item :to="{ path: './' }">首页</el-breadcrumb-item>
 						<el-breadcrumb-item>协议成交管理</el-breadcrumb-item>
 					</el-breadcrumb>
-					<div class="tips"><p>点击项目名称可查看内容详情</p></div>
+					<div class="tips" v-if="$tools.isMenus(17)">
+						<p>点击项目名称可查看内容详情</p>
+					</div>
 					<div class="table-search">
 						<el-input
 							placeholder="请输入接受企业名称"
@@ -59,15 +61,26 @@
 						key="table"
 					>
 						<el-table-column
+							label="序号"
 							type="index"
 							width="50"
 							align="center"
-						></el-table-column>
+							fixed
+						>
+							<template slot-scope="scope">
+								{{ (currentPage - 1) * 20 + scope.$index + 1 }}
+							</template>
+						</el-table-column>
 						<el-table-column :resizable="false" label="项目名称" align="center">
 							<template slot-scope="scope">
-								<a href="javascript:;" @click="openDetail(scope.row)">
+								<a
+									href="javascript:;"
+									@click="openDetail(scope.row)"
+									v-if="$tools.isMenus(17)"
+								>
 									{{ scope.row.projectName }}
 								</a>
+								<span v-else>{{ scope.row.projectName }}</span>
 							</template>
 						</el-table-column>
 						<el-table-column :resizable="false" label="转让金额" align="center">
@@ -165,21 +178,21 @@
 									size="mini"
 									type="success"
 									@click.native.prevent="passRow(scope.row)"
-									v-if="scope.row.status == 2"
+									v-if="scope.row.status == 2 && $tools.isMenus(18)"
 									>通过</el-button
 								>
 								<el-button
 									size="mini"
 									type="info"
 									@click.native.prevent="openReject(scope.row)"
-									v-if="scope.row.status == 2"
+									v-if="scope.row.status == 2 && $tools.isMenus(19)"
 									>驳回</el-button
 								>
 								<el-button
 									size="mini"
 									type="primary"
 									@click="openReason(scope.row)"
-									v-if="scope.row.status == 4"
+									v-if="scope.row.status == 4 && $tools.isMenus(20)"
 									>驳回原因</el-button
 								>
 							</template>
@@ -374,12 +387,14 @@
 										size="small"
 										type="success"
 										@click.native.prevent="passRow(deDatas)"
+										v-if="$tools.isMenus(18)"
 										>通过</el-button
 									>
 									<el-button
 										size="small"
 										type="info"
 										@click.native.prevent="openReject(deDatas)"
+										v-if="$tools.isMenus(19)"
 										>驳回</el-button
 									>
 								</div>

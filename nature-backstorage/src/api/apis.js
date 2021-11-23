@@ -2,19 +2,30 @@ import req from './http.js'
 import state from '../store/state'
 
 // 登录
-export const userLogin = (form, codekey) => req('post', '/login', {
+export const userLogin = (form, codekey) => req('post', 'login', {
   username: form.username,
   password: form.password,
   imgCodeKey: codekey,
   imageCode: form.code,
 })
 // 设置新密码
-export const setNewPassword = (oldPwd, newPwd) => req('put', '/changePwd', {
+export const setNewPassword = (oldPwd, newPwd) => req('put', 'changePwd', {
   oldPwd,
   newPwd
 })
+// 找回密码
+export const setPasswordFirst = (userName, phone, phoneCode) => req('post', 'retrievePassword', {
+  userName,
+  phone,
+  phoneCode
+})
+// 重置密码
+export const ResetPassword = (id, password) => req('put', 'resetPassword', {
+  id,
+  password
+})
 // 注销
-export const userLogout = (clientId) => req('get', '/logout', {
+export const userLogout = (clientId) => req('get', 'logout', {
   clientId
 })
 
@@ -50,11 +61,6 @@ export const PostBannerData = (form) => req('post', 'cms/banner', {
   image: form.image, //banner图
   url: form.url ? form.url : '', //跳转链接
   orders: form.orders ? form.orders : '' //显示顺序
-})
-
-// 上传图片
-export const PostImage = (file) => req('post', 'common/upload/upload-image', {
-  file
 })
 
 //获取banner详情
@@ -130,9 +136,7 @@ export const RejectArticle = (id, reject) => req('put', 'cms/article/reject', {
 })
 
 //修改文章状态
-export const PassArticle = (id, status) => req('put', 'cms/article/status', {
-  id,
-  status
+export const PassArticle = (id) => req('put', `cms/article/status/${id}`, {
 })
 
 //获取文章详情
@@ -199,11 +203,11 @@ export const PostUserData = (form) => req('post', 'system/user', {
 //编辑用户
 export const EditUserData = (form) => req('put', `system/user/${form.id}`, {
   nickName: form.nickName,
-  userName: form.userName,
   phone: form.phone,
   password: form.password,
   deptName: form.deptName,
   roleId: form.roleId,
+  id: form.id
 })
 
 
@@ -214,21 +218,32 @@ export const GetRoleList = (pageNumber) => req('post', 'system/role/list', {
 })
 
 //删除角色
-export const DelRole = (roleId, roleIdTN, flag) => req('delete', 'system/role/removeRelation', {
+export const DelRole = (roleId, roleIdTN, flag) => req('post', 'system/role/removeRelation', {
   roleId,
   roleIdTN,
   flag
 })
 //编辑角色
-export const EditRoleData = (roleId,roleName, ids) => req('post', 'system/role/saveOrUpdate', {
-  roleId,
+export const EditRoleData = (roleName, roleId, ids) => req('post', 'system/role/saveOrUpdate', {
   roleName,
-  ids: ids
+  roleId,
+  ids
 })
 // 获取角色权限
 export const GetAllIds = () => req('post', 'system/menu/list', {
   pageNumber: 1,
   pageSize: -1
+})
+// 获取用户权限
+// export const GetMyMenus = () => req('get', 'system/menu/roleMenuTree', {
+//   userType: 1
+// })
+export const GetMyMenus = () => req('get', 'getInfo', {
+})
+// 获取对应角色权限 
+export const GetRoleMenus = (roleId) => req('get', 'system/menu/checked', {
+  roleId,
+  userType: 1
 })
 // 获取操作日志列表
 export const GetHistory = (pageNumber) => req('post', 'system/operLog/list', {

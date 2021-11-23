@@ -24,10 +24,10 @@
 }
 
 .forget-p {
-  display: block;
+  display: inline-block;
   cursor: pointer;
   margin-top: 20px;
-  text-align: right;
+  float: right;
 }
 
 .forget-p:hover {

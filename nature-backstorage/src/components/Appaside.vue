@@ -12,33 +12,33 @@
 				active-text-color="1a8cff"
 				:router="true"
 			>
-				<el-menu-item index="/">
+				<el-menu-item index="/" v-if="$tools.isMenus(35)">
 					<i class="el-icon-s-home"></i>
 					<span slot="title">首页</span>
 				</el-menu-item>
-				<el-menu-item index="banner">
+				<el-menu-item index="banner" v-if="$tools.isMenus(36)">
 					<i class="el-icon-picture"></i>
 					<span slot="title">banner图管理</span>
 				</el-menu-item>
-				<el-submenu index="3">
+				<el-submenu index="3" v-if="$tools.isMenus(37)">
 					<template slot="title">
 						<i class="el-icon-s-tools"></i>
 						<span>内容管理</span>
 					</template>
 					<el-menu-item-group>
 						<el-menu-item index="managenews">内容管理</el-menu-item>
-						<el-menu-item index="newspost">发布内容</el-menu-item>
+						<el-menu-item index="newspost" v-if="$tools.isMenus(46)">发布内容</el-menu-item>
 					</el-menu-item-group>
 				</el-submenu>
-				<el-submenu index="4">
+				<el-submenu index="4" v-if="$tools.isMenus(38)">
 					<template slot="title">
 						<i class="el-icon-s-tools"></i>
 						<span>系统设置</span>
 					</template>
 					<el-menu-item-group>
-						<el-menu-item index="setuser">人员管理</el-menu-item>
-						<el-menu-item index="setrole">角色管理</el-menu-item>
-						<el-menu-item index="sethistory">操作记录</el-menu-item>
+						<el-menu-item index="setuser" v-if="$tools.isMenus(54)">人员管理</el-menu-item>
+						<el-menu-item index="setrole" v-if="$tools.isMenus(55)">角色管理</el-menu-item>
+						<el-menu-item index="sethistory" v-if="$tools.isMenus(56)">操作记录</el-menu-item>
 					</el-menu-item-group>
 				</el-submenu>
 			</el-menu>
@@ -55,6 +55,7 @@
 </template>
 
 <script>
+import { mapState, mapActions } from "vuex";
 export default {
 	name: "AppAside",
 	data() {
@@ -74,9 +75,14 @@ export default {
 	},
 	mounted() {
 		this.widthflag = this.$state.mobileWidth < 800 ? true : false;
+		this.getAllIds();
+		this.getMyMenus();
 	},
-	computed: {},
+	computed: {
+		...mapState(["allIds", "myMenus"]),
+	},
 	methods: {
+		...mapActions(["getAllIds", "getMyMenus"]),
 		handleSelect(key, keyPath) {},
 	},
 };

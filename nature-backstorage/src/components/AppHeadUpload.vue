@@ -15,7 +15,6 @@
 </template>
 
 <script>
-import { PostImage } from "../api/apis";
 export default {
 	name: "AppHeadUpload",
 	data() {
@@ -42,7 +41,7 @@ export default {
 								headers: {
 									"Content-Type": "multiple/form-data",
 									Accept: "*/*",
-									authorization: "Bearer 2005755a-cdfc-4128-89c0-fcd4b430cf69",
+									authorization: 'Bearer '+this.$cookies.get('authorization'),
 								},
 							})
 							.then((res) => {

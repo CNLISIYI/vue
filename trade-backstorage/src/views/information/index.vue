@@ -24,9 +24,9 @@
 						<el-select v-model="selectval" placeholder="请选择所属交易所">
 							<el-option
 								v-for="item in selectopt"
-								:key="item.value"
-								:label="item.label"
-								:value="item.value"
+								:key="item.id"
+								:label="item.name"
+								:value="item.id"
 							>
 							</el-option>
 						</el-select>
@@ -39,8 +39,9 @@
 						>
 					</div>
 					<div class="table-operate">
-						<el-button type="primary" @click="addInfos">录入信息</el-button>
-						<div class="el-button el-button--primary">
+						<el-button type="primary" @click="addInfos"  v-if="$tools.isMenus(21)">录入信息</el-button>
+						<el-button type="primary" @click="downModel" v-if="$tools.isMenus(22)">下载模版</el-button>
+						<div class="el-button el-button--primary" v-if="$tools.isMenus(22)">
 							<el-upload
 								action=""
 								:on-change="handleChange"
@@ -61,10 +62,16 @@
 						key="table"
 					>
 						<el-table-column
+							label="序号"
 							type="index"
 							width="50"
 							align="center"
-						></el-table-column>
+							fixed
+						>
+							<template slot-scope="scope">
+								{{ (currentPage - 1) * 20 + scope.$index + 1 }}
+							</template>
+						</el-table-column>
 						<el-table-column
 							:resizable="false"
 							label="所属交易所"
@@ -79,6 +86,11 @@
 								<span>{{ scope.row.openingPrice }}</span>
 							</template>
 						</el-table-column>
+						<el-table-column :resizable="false" label="收盘价" align="center">
+							<template slot-scope="scope">
+								<span>{{ scope.row.closingPrice }}</span>
+							</template>
+						</el-table-column>
 						<el-table-column :resizable="false" label="成交价" align="center">
 							<template slot-scope="scope">
 								<span>{{ scope.row.tradedPrice }}</span>
@@ -91,6 +103,16 @@
 						>
 							<template slot-scope="scope">
 								<span>{{ scope.row.tradedQuantity }}</span>
+							</template>
+						</el-table-column>
+						<el-table-column :resizable="false" label="最高价" align="center">
+							<template slot-scope="scope">
+								<span>{{ scope.row.highestPrice }}</span>
+							</template>
+						</el-table-column>
+						<el-table-column :resizable="false" label="最低价" align="center">
+							<template slot-scope="scope">
+								<span>{{ scope.row.lowestPrice }}</span>
 							</template>
 						</el-table-column>
 						<el-table-column :resizable="false" label="日期" align="center">
@@ -115,12 +137,14 @@
 									size="mini"
 									type="warning"
 									@click="openEditPop(scope.row)"
+									v-if="$tools.isMenus(23)"
 									>编辑</el-button
 								>
 								<el-button
 									@click.native.prevent="deleteRow(scope.row)"
 									type="danger"
 									size="mini"
+									v-if="$tools.isMenus(24)"
 								>
 									删除
 								</el-button>
@@ -156,9 +180,9 @@
 								>
 									<el-option
 										v-for="item in selectopt"
-										:key="item.value"
-										:label="item.label"
-										:value="item.value"
+										:key="item.id"
+										:label="item.name"
+										:value="item.id"
 									>
 									</el-option>
 								</el-select>
@@ -239,6 +263,8 @@ import {
 	PostInfoData,
 	GetInfoDetail,
 	DelInfo,
+	GetMarket,
+	GetexlModel,
 } from "../../api/apis";
 import { mapState } from "vuex";
 export default {
@@ -284,10 +310,7 @@ export default {
 					},
 				],
 			},
-			selectopt: [
-				{ value: 1, label: "欧盟交易所" },
-				{ value: 2, label: "已通过" },
-			],
+			selectopt: [],
 		};
 	},
 	created() {},
@@ -297,15 +320,56 @@ export default {
 	watch: {},
 	mounted() {
 		this.getlist();
+		this.getmarketlist();
 	},
 
 	methods: {
 		handleselect(value) {
-			this.selectopt.map((item)=>{
-				if(value == item.value){
-					this.ruleForm.exchangeName = item.label
+			this.selectopt.map((item) => {
+				if (value == item.id) {
+					this.ruleForm.exchangeName = item.name;
 				}
-			})
+			});
+		},
+		// 下载模版
+		downModel() {
+			this.$axios
+				.post(
+					"admin-center/trade/marketInfo/exportTemplate",
+					{},
+					{
+						headers: {
+							"Content-Type": "multiple/form-data",
+							Accept: "*/*",
+							authorization: "Bearer " + this.$cookies.get("authorization"),
+						},
+						responseType: "arraybuffer",
+					}
+				)
+				.then((res) => {
+					this.$tools.export_excel_file(res.data);
+				})
+				.catch((err) => {
+					this.$message.error(err);
+				});
+		},
+		// 获取交易所
+		getmarketlist() {
+			GetMarket()
+				.then((res) => {
+					if (res.code == 0) {
+						if (res.data) {
+							this.selectopt = res.data.records;
+						} else {
+							this.$message.error("暂无数据");
+						}
+					} else {
+						this.$message.error(res.msg);
+					}
+				})
+				.catch((err) => {
+					this.$message.error(err);
+				});
 		},
 		// 获取列表
 		getlist() {
@@ -402,16 +466,28 @@ export default {
 				})
 				.catch(() => {});
 		},
-		handleChange() {},
+		handleChange(file) {},
 		// 导入
 		uploadFile(param) {
-			let form = new FormData();
-			form.append("file", param.file);
-			form.append("updateSupport", true);
-			console.log(param);
-			// importData(form).then((res) => {
-			// 	console.log(res);
-			// });
+			let formData = new FormData();
+			formData.append("file", param.file);
+			this.$axios
+				.post("admin-center/trade/marketInfo/importExcel", formData, {
+					headers: {
+						"Content-Type": "multiple/form-data",
+						Accept: "*/*",
+						authorization: "Bearer " + this.$cookies.get("authorization"),
+					},
+				})
+				.then((res) => {
+					if (res.data.code == 0) {
+						this.$message.success("导入成功");
+						this.getlist();
+					} else {
+						this.$message.error(res.data.msg);
+					}
+				})
+				.catch(() => {});
 		},
 	},
 };

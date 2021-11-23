@@ -7,10 +7,18 @@
 			</div>
 			<h4 class="head-h4">自然碳汇交易中心网站管理后台</h4>
 		</router-link>
-		<el-menu class="el-menu-demo" mode="horizontal" active-text-color="#fff">
+		<el-menu
+			class="el-menu-demo"
+			mode="horizontal"
+			active-text-color="#fff"
+			v-if="$cookies.get('username')"
+		>
 			<el-submenu index="1">
-				<template slot="title">{{$cookies.get("username")}}</template>
-				<el-menu-item index="1-1" @click="$router.push({ name: 'changepw' })"
+				<template slot="title">{{ $cookies.get("username") }}</template>
+				<el-menu-item
+					index="1-1"
+					@click="$router.push({ name: 'changepw' })"
+					v-if="$tools.isMenus(39)"
 					>修改密码</el-menu-item
 				>
 				<el-menu-item index="1-2" @click="logout">退出登录</el-menu-item>

@@ -117,6 +117,16 @@ export default {
 		color: #1a8cff;
 	}
 }
+.el-card__body {
+	li {
+		font-size: 14px;
+		color: #222222;
+		line-height: 22px;
+	}
+	li+li {
+		margin-top: 10px;
+	}
+}
 // 小屏幕标签页切换按钮
 .el-tabs__nav-next,
 .el-tabs__nav-prev {
@@ -294,6 +304,15 @@ export default {
 .mt20 {
 	margin-top: 20px;
 }
+.mt100 {
+	margin-top: 100px;
+}
+.ml20 {
+	margin-left: 20px;
+}
+.ml40 {
+	margin-left: 40px;
+}
 .el-button {
 	overflow: hidden;
 	vertical-align: middle;
@@ -343,5 +362,8 @@ export default {
 	width: 120px;
 	height: 120px;
 	display: block;
+}
+.el-breadcrumb {
+	margin-bottom: 20px;
 }
 </style>

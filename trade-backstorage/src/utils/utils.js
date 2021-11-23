@@ -1,4 +1,6 @@
 import FileSaver from "file-saver";
+import state from '../store/state'
+
 
 // 时间戳转yyyy-mm-dd h:m:s
 const timeToDate = (times) => {
@@ -38,18 +40,6 @@ const pastDate = (nums) => {
   let now = new Date().getTime(),
     past = new Date(now - 24 * 60 * 60 * 1000 * nums);
   return `${past.getFullYear()}-${past.getMonth()+1}-${past.getDate()}`
-}
-
-// 计算距离时间 dd:hh
-const toDayHour = (times) => {
-  let stimes = times - new Date().getTime() / 1000;
-  if (stimes < 0) {
-    return `0 ${state.arkDatas.base.hour}`
-  } else {
-    let dd = Math.floor(stimes / (60 * 60 * 24));
-    let hh = Math.floor(stimes / (60 * 60)) - dd * 24;
-    return `${dd} ${state.arkDatas.base.day} ${hh} ${state.arkDatas.base.hour}`
-  }
 }
 
 const isMobile = () => {
@@ -119,6 +109,21 @@ const bytesToSize = (bytes) => {
   };
 }
 
+// 文件流转换
+const export_excel_file = (export_data) => {
+  let link = document.createElement("a");
+  let blogw = new Blob([export_data], {
+    type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
+  })
+  let objectUrl = window.URL.createObjectURL(blogw);
+  link.href = objectUrl;
+  let file_name = `导入数据模板.xlsx`;
+  link.download = file_name;
+  link.click();
+  window.URL.revokeObjectURL(objectUrl);
+
+}
+
 // 导出文件
 const exportCSV = (data, filename) => {
   const Json2csvParser = require("json2csv").Parser;
@@ -159,6 +164,69 @@ const roleToLabel = (value) => {
   return label;
 }
 
+const isMenus = (id) => {
+  return state.myMenus.includes(id)
+}
+
+const checkIds = (datas) => {
+  if (datas.includes(9) && datas.includes(10) && datas.includes(11) && datas.includes(12)) {
+    datas.map((item, index) => {
+      if (item == 2) {
+        datas.slice(index, 1)
+      }
+      datas.push(2)
+    })
+  }
+  if (datas.includes(13) && datas.includes(14) && datas.includes(15) && datas.includes(16)) {
+    datas.map((item, index) => {
+      if (item == 3) {
+        datas.slice(index, 1)
+      }
+      datas.push(3)
+    })
+  }
+  if (datas.includes(17) && datas.includes(18) && datas.includes(19) && datas.includes(20)) {
+    datas.map((item, index) => {
+      if (item == 4) {
+        datas.slice(index, 1)
+      }
+      datas.push(4)
+    })
+  }
+  if (datas.includes(21) && datas.includes(22) && datas.includes(23) && datas.includes(24)) {
+    datas.map((item, index) => {
+      if (item == 5) {
+        datas.slice(index, 1)
+      }
+      datas.push(5)
+    })
+  }
+  if (datas.includes(25) && datas.includes(26) && datas.includes(27) && datas.includes(28)) {
+    datas.map((item, index) => {
+      if (item == 7) {
+        datas.slice(index, 1)
+      }
+      datas.push(7)
+    })
+  }
+  if (datas.includes(29) && datas.includes(30) && datas.includes(31)) {
+    datas.map((item, index) => {
+      if (item == 25) {
+        datas.slice(index, 1)
+      }
+      datas.push(25)
+    })
+  }
+  if (datas.includes(32) && datas.includes(33) && datas.includes(34)) {
+    datas.map((item, index) => {
+      if (item == 26) {
+        datas.slice(index, 1)
+      }
+      datas.push(26)
+    })
+  }
+}
+
 export default {
   timeToDate,
   toYMDDate,
@@ -166,7 +234,7 @@ export default {
   openUrl,
   bytesToSize,
   toMDDate,
-  toDayHour,
+  isMenus,
   exportCSV,
   pastDate,
   StoYMDDate,
@@ -176,5 +244,7 @@ export default {
   imageBase64ToBlob,
   onlyNumber,
   onlyEnglish,
-  roleToLabel
+  roleToLabel,
+  // checkIds,
+  export_excel_file
 }

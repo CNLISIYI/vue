@@ -1,4 +1,5 @@
 import axios from 'axios'
+import router from '../router'
 import cookies from 'vue-cookies'
 
 // const authorization = 'Bearer 2005755a-cdfc-4128-89c0-fcd4b430cf69'
@@ -10,7 +11,7 @@ var instance = axios.create({
   baseURL: '/admin-center/',
   headers: {
     'Accept': '*/*',
-    'authorization': cookies.get('authorization') ? authorization : '',
+    // 'authorization': cookies.get('authorization') ? authorization : '',
     'Content-Type': 'application/json',
   }
 })
@@ -18,7 +19,6 @@ var instance = axios.create({
 
 //------------------- 一、请求拦截器 忽略
 instance.interceptors.request.use(function (config) {
-
   return config;
 }, function (error) {
   console.log('请求错误')
@@ -27,7 +27,13 @@ instance.interceptors.request.use(function (config) {
 
 //----------------- 二、响应拦截器 忽略
 instance.interceptors.response.use(function (response) {
-
+  if (response.data.code == 401) {
+    cookies.set("authorization", '');
+    cookies.set("username", '');
+    router.push({
+      name: "login",
+    });
+  }
   return response.data;
 }, function (error) {
   console.log('拦截器报错');
@@ -46,7 +52,7 @@ export default function (method, url, data = null) {
   method = method.toLowerCase();
   if (method == 'post') {
     let headers = {
-      'authorization': cookies.get('authorization') ? 'Bearer ' + cookies.get('authorization') : '',
+      'authorization': 'Bearer ' + cookies.get('authorization'),
       'Accept': '*/*',
       'Content-Type': 'application/json',
     }
@@ -57,7 +63,7 @@ export default function (method, url, data = null) {
     return instance.get(url, {
       params: data,
       headers: {
-        'authorization': cookies.get('authorization') ? 'Bearer ' + cookies.get('authorization') : '',
+        'authorization': 'Bearer ' + cookies.get('authorization'),
         'Content-Type': 'application/json',
       }
     })
@@ -65,14 +71,14 @@ export default function (method, url, data = null) {
     return instance.delete(url, {
       params: data,
       headers: {
-        'authorization': cookies.get('authorization') ? 'Bearer ' + cookies.get('authorization') : '',
+        'authorization': 'Bearer ' + cookies.get('authorization'),
         'Content-Type': 'application/json',
       }
     })
   } else if (method == 'put') {
     return instance.put(url, data, {
       headers: {
-        'authorization': cookies.get('authorization') ? 'Bearer ' + cookies.get('authorization') : '',
+        'authorization': 'Bearer ' + cookies.get('authorization'),
         'Content-Type': 'application/json',
       }
     })

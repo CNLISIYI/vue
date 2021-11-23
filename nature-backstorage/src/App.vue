@@ -145,6 +145,16 @@ export default {
 		color: #222;
 	}
 }
+.el-card__body {
+	li {
+		font-size: 14px;
+		color: #222222;
+		line-height: 22px;
+	}
+	li+li {
+		margin-top: 10px;
+	}
+}
 // 右侧抽屉样式
 .el-drawer.rtl {
 	top: 80px !important;
@@ -344,5 +354,17 @@ export default {
 	width: 120px;
 	height: 120px;
 	display: block;
+}
+.mt100 {
+	margin-top: 100px;
+}
+.ml20 {
+	margin-left: 20px;
+}
+.ml40 {
+	margin-left: 40px;
+}
+.el-breadcrumb {
+	margin-bottom: 20px;
 }
 </style>

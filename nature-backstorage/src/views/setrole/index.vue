@@ -10,8 +10,17 @@
 						<el-breadcrumb-item>系统设置</el-breadcrumb-item>
 						<el-breadcrumb-item>角色管理</el-breadcrumb-item>
 					</el-breadcrumb>
-					<div class="table-operate">
-						<el-button type="primary" @click="addrole('')">新增角色</el-button>
+					<!-- <div class="table-operate"> -->
+					<div class="table-operate" v-if="$tools.isMenus(60)">
+						<el-button
+							type="primary"
+							@click="
+								addinfoShow = true;
+								editid = '';
+								ruleForm.name = '';
+							"
+							>新增角色</el-button
+						>
 					</div>
 					<el-table
 						:data="tableData"
@@ -46,6 +55,7 @@
 									@click="openDetail(scope.row)"
 									type="primary"
 									size="mini"
+									v-if="$tools.isMenus(61)"
 								>
 									编辑
 								</el-button>
@@ -53,6 +63,7 @@
 									@click.native.prevent="deleteRow(scope.row)"
 									type="danger"
 									size="mini"
+									v-if="$tools.isMenus(62)"
 								>
 									删除
 								</el-button>
@@ -91,6 +102,59 @@
 							<el-button type="primary" @click="deleteBtn">确 定</el-button>
 						</div>
 					</el-dialog>
+					<el-drawer
+						:title="editid ? '编辑角色信息' : '新增角色信息'"
+						:visible.sync="addinfoShow"
+						size="70%"
+					>
+						<el-form
+							:model="ruleForm"
+							ref="form"
+							label-width="100px"
+							class="demo-ruleForm"
+						>
+							<el-form-item label="角色名称" required>
+								<el-input
+									v-model="ruleForm.name"
+									placeholder="请输入角色名称"
+									type="text"
+									maxlength="30"
+									show-word-limit
+								></el-input>
+							</el-form-item>
+							<el-form-item label="操作权限" required>
+								<el-checkbox-group v-model="ids" @change="handleCheckedChange">
+									<el-checkbox
+										v-for="item in $state.allIds"
+										:label="item.value"
+										:key="item.value"
+										:class="[
+											item.value < 40 || item.value == 54 || item.value == 55
+												? 'block'
+												: '',
+											item.value == 40 ||
+											item.value == 46 ||
+											item.value == 55 ||
+											item.value == 54
+												? 'ml20'
+												: '',
+											item.value == 57 || item.value == 60 ? 'ml40' : '',
+										]"
+										>{{ item.label }}
+									</el-checkbox>
+								</el-checkbox-group>
+							</el-form-item>
+						</el-form>
+						<div class="sub-btn">
+							<el-button
+								type="primary"
+								@click="addrole"
+								v-loading="uploading"
+								element-loading-spinner="el-icon-loading"
+								>确定保存</el-button
+							>
+						</div>
+					</el-drawer>
 				</el-main>
 			</el-container>
 		</el-container>
@@ -98,8 +162,13 @@
 </template>
 
 <script>
-import { GetRoleList, DelRole, EditRoleData } from "../../api/apis";
-import { mapState } from "vuex";
+import {
+	GetRoleList,
+	DelRole,
+	EditRoleData,
+	GetRoleMenus,
+} from "../../api/apis";
+import { mapState, mapActions } from "vuex";
 export default {
 	name: "AppSetRole",
 
@@ -110,12 +179,14 @@ export default {
 			total: 0,
 			tableData: [],
 			editid: "",
-			ruleForm: {},
+			ruleForm: { name: "" },
 			uploading: false,
 			deleteshow: false,
 			deleteId: "",
 			roleId: "",
 			form: {},
+			addinfoShow: false,
+			ids: [],
 		};
 	},
 	created() {},
@@ -125,9 +196,11 @@ export default {
 	watch: {},
 	mounted() {
 		this.getList();
+		this.getAllRole();
 	},
 
 	methods: {
+		...mapActions(["getAllRole"]),
 		// 获取列表
 		getList() {
 			this.loading = true;
@@ -162,6 +235,8 @@ export default {
 						if (action === "confirm") {
 							this.deleteFunc(row.roleId, -1, false);
 							done();
+						} else {
+							done();
 						}
 					},
 				})
@@ -195,53 +270,32 @@ export default {
 		// 编辑
 		openDetail(row) {
 			this.editid = row.roleId;
-			this.addrole(row.roleName);
+			this.ruleForm.name = row.roleName;
+			this.addinfoShow = true;
+			GetRoleMenus(row.roleId).then((res) => {
+				if (res.code == 0) {
+					this.ids = res.data;
+				} else {
+					this.$message.error(res.msg);
+				}
+			});
+		},
+		handleCheckedChange(value) {
+			// this.ids = this.$tools.checkIds(value);
 		},
 		// 打开新增
-		addrole(name) {
-			this.$prompt("请输入角色名称", name ? "编辑" : "新增", {
-				confirmButtonText: "确定",
-				cancelButtonText: "取消",
-				inputValue: name ? name : "",
-				beforeClose: (action, instance, done) => {
-					if (action === "confirm") {
-						if (!instance.inputValue) {
-							this.$message.error("请输入角色名称");
-						} else if (instance.inputValue.length > 30) {
-							this.$message.error(
-								`最多输入30个字；当前${instance.inputValue.length}个字`
-							);
-						} else {
-							instance.confirmButtonLoading = true;
-							instance.confirmButtonText = "";
-							EditRoleData(this.editid, instance.inputValue, this.$state.allIds)
-								.then((res) => {
-									instance.confirmButtonLoading = false;
-									instance.confirmButtonText = "确定";
-									if (res.code == 0) {
-										this.$message.success("保存成功");
-										this.getList();
-										done();
-									} else {
-										this.$message.error(res.msg);
-									}
-								})
-								.catch((err) => {
-									instance.confirmButtonLoading = false;
-									instance.confirmButtonText = "确定";
-								});
-						}
-					} else {
-						instance.confirmButtonLoading = false;
-						instance.confirmButtonText = "确定";
-						done();
-					}
-				},
-			})
-				.then(({ value }) => {
-					this.getBannerList();
-				})
-				.catch(() => {});
+		addrole() {
+			this.uploading = true;
+			EditRoleData(this.ruleForm.name, this.editid, this.ids).then((res) => {
+				this.uploading = false;
+				if (res.code == 0) {
+					this.$message.success("保存成功");
+					this.getList();
+					this.addinfoShow = false;
+				} else {
+					this.$message.error(res.msg);
+				}
+			});
 		},
 	},
 };

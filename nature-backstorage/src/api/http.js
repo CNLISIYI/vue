@@ -27,7 +27,13 @@ instance.interceptors.request.use(function (config) {
 
 //----------------- 二、响应拦截器 忽略
 instance.interceptors.response.use(function (response) {
-
+  if (response.data.code == 401) {
+    cookies.set("authorization", '');
+    cookies.set("username", '');
+    router.push({
+      name: "login",
+    });
+  }
   return response.data;
 }, function (error) {
   console.log('拦截器报错');

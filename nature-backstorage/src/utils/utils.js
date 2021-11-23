@@ -1,4 +1,5 @@
 import FileSaver from "file-saver";
+import state from '../store/state'
 
 // 时间戳转yyyy-mm-dd h:m:s
 const timeToDate = (times) => {
@@ -40,18 +41,6 @@ const pastDate = (nums) => {
   return `${past.getFullYear()}-${past.getMonth()+1}-${past.getDate()}`
 }
 
-// 计算距离时间 dd:hh
-const toDayHour = (times) => {
-  let stimes = times - new Date().getTime() / 1000;
-  if (stimes < 0) {
-    return `0 ${state.arkDatas.base.hour}`
-  } else {
-    let dd = Math.floor(stimes / (60 * 60 * 24));
-    let hh = Math.floor(stimes / (60 * 60)) - dd * 24;
-    return `${dd} ${state.arkDatas.base.day} ${hh} ${state.arkDatas.base.hour}`
-  }
-}
-
 const isMobile = () => {
   let flag = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)
   return flag;
@@ -73,17 +62,17 @@ const onlyChinese = (value) => {
 
 // 只能输入数字
 const onlyNumber = (value) => {
-  return value.replace(/[^\d]/g,'')
+  return value.replace(/[^\d]/g, '')
 }
 
 // 只能输入字母
 const onlyEnglish = (value) => {
-  return value.replace(/[^\a-\z\A-\Z]/g,'')
+  return value.replace(/[^\a-\z\A-\Z]/g, '')
 }
 
 // 只能输入字母、数字
 const onlyEngNum = (value) => {
-  return value.replace(/[^\a-\z\A-\Z\d]/g,'')
+  return value.replace(/[^\a-\z\A-\Z\d]/g, '')
 }
 
 // base64转url
@@ -144,6 +133,22 @@ const PhoneInput = (nums) => {
   }
 }
 
+// 权限
+const isMenus = (id) => {
+  return state.myMenus.includes(id)
+}
+
+// 转换类型
+const changeType = (id) => {
+  let _name = '';
+  state.typeopt.map(item => {
+    if (item.id == id) {
+      _name = item.name
+    }
+  })
+  return _name
+}
+
 export default {
   timeToDate,
   toYMDDate,
@@ -151,7 +156,6 @@ export default {
   openUrl,
   bytesToSize,
   toMDDate,
-  toDayHour,
   exportCSV,
   pastDate,
   StoYMDDate,
@@ -161,5 +165,7 @@ export default {
   imageBase64ToBlob,
   onlyNumber,
   onlyEngNum,
+  isMenus,
+  changeType,
   onlyEnglish
 }

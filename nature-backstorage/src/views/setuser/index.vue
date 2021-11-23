@@ -32,7 +32,7 @@
 							>搜索</el-button
 						>
 					</div>
-					<div class="table-operate">
+					<div class="table-operate" v-if="$tools.isMenus(57)">
 						<el-button
 							type="primary"
 							@click="
@@ -111,6 +111,7 @@
 									@click="openDetail(scope.row)"
 									type="primary"
 									size="mini"
+									v-if="$tools.isMenus(58)"
 								>
 									编辑
 								</el-button>
@@ -118,6 +119,7 @@
 									@click.native.prevent="deleteRow(scope.row)"
 									type="danger"
 									size="mini"
+									v-if="$tools.isMenus(59)"
 								>
 									删除
 								</el-button>

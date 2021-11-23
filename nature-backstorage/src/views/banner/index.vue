@@ -9,7 +9,7 @@
 						<el-breadcrumb-item :to="{ path: './' }">首页</el-breadcrumb-item>
 						<el-breadcrumb-item>banner图管理</el-breadcrumb-item>
 					</el-breadcrumb>
-					<div class="table-operate">
+					<div class="table-operate" v-if="$tools.isMenus(40)">
 						<el-button type="primary" @click="addbanner">新增banner</el-button>
 					</div>
 					<el-table
@@ -70,7 +70,7 @@
 						>
 							<template slot-scope="scope">
 								<span v-if="scope.row.status == 1" class="green">已通过</span>
-								<span v-else-if="scope.row.status == 2" class="red"
+								<span v-else-if="scope.row.status == -1" class="red"
 									>已驳回</span
 								>
 								<span v-else-if="scope.row.status == 0">待审批</span>
@@ -93,13 +93,14 @@
 									size="mini"
 									type="warning"
 									@click="openEditPop(scope.row)"
-									v-if="scope.row.status != 1"
+									v-if="scope.row.status != 1 && $tools.isMenus(41)"
 									>编辑</el-button
 								>
 								<el-button
 									@click.native.prevent="deleteRow(scope.row)"
 									type="danger"
 									size="mini"
+									v-if="$tools.isMenus(42)"
 								>
 									删除
 								</el-button>
@@ -107,21 +108,21 @@
 									size="mini"
 									type="success"
 									@click.native.prevent="passRow(scope.row)"
-									v-if="scope.row.status == 0"
+									v-if="scope.row.status == 0 && $tools.isMenus(43)"
 									>通过</el-button
 								>
 								<el-button
 									size="mini"
 									type="info"
 									@click.native.prevent="openReject(scope.row)"
-									v-if="scope.row.status == 0"
+									v-if="scope.row.status == 0 && $tools.isMenus(44)"
 									>驳回</el-button
 								>
 								<el-button
 									size="mini"
 									type="primary"
 									@click="openReason(scope.row.reject)"
-									v-if="scope.row.status == 2"
+									v-if="scope.row.status == -1 && $tools.isMenus(45)"
 									>驳回原因</el-button
 								>
 							</template>
